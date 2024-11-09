@@ -1,5 +1,5 @@
 import { Users, Trophy, Leaf } from "lucide-react";
-import FeatureCard from "../atoms/FeatureCard";
+import FeatureCard from "./FeatureCard";
 
 export default function FeatureList() {
   const features = [

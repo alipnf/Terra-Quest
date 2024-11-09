@@ -1,4 +1,4 @@
-import ListItem from "../atoms/ListItem";
+import ListItem from "./ListItem";
 
 export default function NpcInfo({ selectedNpc }) {
   return (

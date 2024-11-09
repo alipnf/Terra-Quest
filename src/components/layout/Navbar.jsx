@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import IconLink from "../atoms/IconLink";
+import IconLink from "./IconLink";
 import { Leaf, Home, Trophy, ScrollText, Bot, Menu } from "lucide-react";
 
 export default function Navbar() {
