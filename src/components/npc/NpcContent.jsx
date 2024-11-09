@@ -1,4 +1,4 @@
-import SelectNpc from "./SelectNpc";
+import SelectNpc from "../common/SelectNpc";
 import NpcInfo from "./NpcInfo";
 import QuestItem from "./QuestItem";
 import { useNpcData } from "../../hooks/useNpcData";
