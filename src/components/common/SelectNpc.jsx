@@ -10,6 +10,7 @@ export default function SelectNpc({ npcData, selectedNpc, handleNpcChange }) {
         onChange={handleNpcChange}
         className="select select-bordered"
       >
+        <option value="">--Pilih NPC--</option>
         {npcData.map((npc) => (
           <option key={npc.id} value={npc.name}>
             {npc.name}

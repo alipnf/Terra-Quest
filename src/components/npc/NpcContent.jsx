@@ -1,9 +1,9 @@
+import SelectNpc from "../common/SelectNpc";
+import NpcInfo from "./NpcInfo";
+import QuestItem from "./QuestItem";
 import { useNpcData } from "../../hooks/useNpcData";
-import SelectNpc from "../atoms/SelectNpc";
-import NpcInfo from "../molecules/NpcInfo";
-import QuestItem from "../molecules/QuestItem";
 
-export default function NPCDetail() {
+export default function NpcContent() {
   const { npcData, selectedNpc, handleNpcChange } = useNpcData();
 
   if (!npcData.length) {
@@ -12,18 +12,18 @@ export default function NPCDetail() {
 
   if (!selectedNpc) {
     return (
-      <div className="container mx-auto mb-8 min-h-screen p-4">
+      <>
         <SelectNpc
           npcData={npcData}
           selectedNpc={selectedNpc}
           handleNpcChange={handleNpcChange}
         />
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="container mx-auto min-h-screen p-4">
+    <>
       <SelectNpc
         npcData={npcData}
         selectedNpc={selectedNpc}
@@ -40,6 +40,6 @@ export default function NPCDetail() {
           <div>No quests available.</div>
         )}
       </div>
-    </div>
+    </>
   );
 }

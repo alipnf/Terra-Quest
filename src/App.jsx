@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/pages/Home";
-import Navbar from "./components/molecules/Navbar";
-import Footer from "./components/molecules/Footer";
-import NPCDetail from "./components/pages/NpcDetail";
+import Home from "./pages/Home";
+import NpcDetail from "./pages/NpcDetail";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+import Quest from "./pages/Quest";
 
 export default function App() {
   return (
@@ -10,7 +11,8 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/npc" element={<NPCDetail />} />
+        <Route path="/npc" element={<NpcDetail />} />
+        <Route path="/quest" element={<Quest />} />
       </Routes>
       <Footer />
     </Router>

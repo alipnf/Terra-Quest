@@ -1,4 +1,4 @@
-import QuestBadge from "../atoms/QuestBadge";
+import QuestBadge from "./QuestBadge";
 
 export default function QuestItem({ quest }) {
   return (

@@ -1,6 +1,6 @@
-import WelcomeSection from "../molecules/WelcomeSection";
-import NPCSection from "../molecules/NPCSection";
-import FeatureList from "../molecules/FeatureList";
+import WelcomeSection from "./WelcomeSection";
+import FeatureList from "./FeatureList";
+import NPCSection from "./NpcSection";
 
 export default function HomeContent() {
   return (
