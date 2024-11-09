@@ -39,7 +39,7 @@ export default function Navbar() {
         </button>
         {/* Dropdown Menu */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-full mt-8 w-48 rounded-lg bg-neutral shadow-lg">
+          <div className="absolute right-0 top-full mt-8 w-48 rounded-lg bg-neutral shadow-lg z-10">
             <IconLink
               to="/"
               icon={Home}
