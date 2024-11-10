@@ -14,7 +14,7 @@ export default function NpcContent() {
   }
 
   return (
-    <div role="tablist" className="tabs tabs-lifted">
+    <div role="tablist" className="tabs tabs-bordered border-neutral-300">
       {npcData.map((npc, index) => (
         <>
           {/* Input radio untuk setiap tab dengan label unik */}
@@ -22,7 +22,7 @@ export default function NpcContent() {
             type="radio"
             name="npc_tabs_2"
             role="tab"
-            className="tab"
+            className="tab mx-2"
             aria-label={npc.name}
             id={`tab${index + 1}`}
             defaultChecked={
@@ -33,7 +33,7 @@ export default function NpcContent() {
 
           <div
             role="tabpanel"
-            className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+            className="tab-content rounded-box p-6"
             id={`tabpanel${index + 1}`}
           >
             <NpcInfo selectedNpc={npc} />
