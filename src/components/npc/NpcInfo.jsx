@@ -2,8 +2,8 @@ import ListItem from "./ListItem";
 
 export default function NpcInfo({ selectedNpc }) {
   return (
-    <div className="card mb-8 w-full bg-neutral-content shadow-md">
-      <div className="card-body">
+    <div className="card mb-8 w-full bg-neutral shadow-md">
+      <div className="card-body text-neutral-content">
         <h2 className="card-title">{selectedNpc.name}</h2>
         <p className="text-sm text-gray-500">{selectedNpc.title}</p>
         <p className="mt-4">{selectedNpc.description}</p>

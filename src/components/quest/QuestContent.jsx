@@ -4,7 +4,7 @@ import { useNpcData } from "../../hooks/useNpcData";
 import { generateQuest } from "../../services/geminiApiServices";
 import SelectNpc from "./SelectNpc";
 
-export default function QuestContent() {
+export default function QuestContent({ setTheme }) {
   const { npcData, selectedNpc, handleNpcChange } = useNpcData();
   const [quests, setQuests] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -57,6 +57,7 @@ export default function QuestContent() {
         handleNpcChange={handleNpcChange}
         handleSearchQuests={generateQuestHandler}
         loading={loading}
+        setTheme={setTheme}
       />
       {error && <p className="mt-4 text-red-500">{error}</p>}
       {quests.length > 0 && (

@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 
 export default function WelcomeSection() {
   return (
-    <section className="mb-12 text-center">
-      <h1 className="mb-4 text-4xl font-bold text-primary-content">
-        Selamat Datang di TerraQuest
-      </h1>
-      <p className="mb-8 text-xl text-gray-600">
+    <section className="mb-12 text-center text-current">
+      <h1 className="mb-4 text-4xl font-bold">Selamat Datang di TerraQuest</h1>
+      <p className="mb-8 text-xl">
         Bergabunglah dalam petualangan untuk menyelamatkan bumi melalui
         quest-quest interaktif!
       </p>

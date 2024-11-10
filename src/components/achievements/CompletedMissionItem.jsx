@@ -1,5 +1,3 @@
-import { CheckCircle2 } from "lucide-react";
-
 export default function CompletedMissionItem({ mission }) {
   return (
     <>
@@ -11,7 +9,6 @@ export default function CompletedMissionItem({ mission }) {
             className="mb-4 flex items-center justify-between last:mb-0"
           >
             <div className="flex items-center">
-              <CheckCircle2 className="mr-2 h-5 w-5 text-green-500" />
               <span>{mission.title}</span>
             </div>
             <div className="flex items-center">
@@ -20,7 +17,7 @@ export default function CompletedMissionItem({ mission }) {
               >
                 {mission.difficulty}
               </span>
-              <span className="ml-2 font-bold">{mission.points} pts</span>
+              <span className="ml-2 font-bold">{mission.points} p</span>
             </div>
           </div>
         ))}

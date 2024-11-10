@@ -7,8 +7,15 @@ export default function SelectNpc({
   handleNpcChange,
   handleSearchQuests,
   loading,
+  setTheme,
 }) {
   const [selectedNPC, setSelectedNPC] = useState(selectedNpc);
+
+  useEffect(() => {
+    const npcTheme = npcData.find((npc) => npc.name === selectedNPC)?.theme;
+    if (!npcTheme) return;
+    setTheme(npcTheme);
+  }, [npcData, selectedNPC, setTheme]);
 
   useEffect(() => {
     setSelectedNPC(selectedNpc);
