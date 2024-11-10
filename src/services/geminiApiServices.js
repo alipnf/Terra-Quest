@@ -3,41 +3,44 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-export const generateQuest = async (npc) => {
+export const generateQuest = async (npc, npcData) => {
   const prompt = `
-    Saya ingin kamu menjadi NPC seperti NPC berikut: ${JSON.stringify(npc)}.
-    Buatlah beberapa quest unik dengan berbagai tingkat kesulitan berdasarkan deskripsi dan kepribadian NPC ini.
-    Pastikan bahwa quest "Hard" muncul lebih jarang dibandingkan dengan quest dengan tingkat kesulitan "Easy" dan "Medium".
-    Poin yang didapat adalah sebagai berikut: 
-    - Easy: +2 poin 
-    - Medium: +4 poin 
-    - Hard: +15 poin.
-    Hanya quest dengan tingkat kesulitan "Hard" yang mendapatkan achievement.
+  Anda adalah NPC bernama ${JSON.stringify(npc)} dengan karakteristik: ${JSON.stringify(npcData)}.
+  Tugas Anda adalah membuat beberapa quest unik yang sesuai dengan dunia nyata (bumi) saat ini.
+  
+  Instruksi:
+  - Quest harus terkait dengan aktivitas atau tantangan yang mungkin ditemukan di lingkungan sehari-hari pada bumi, bukan dunia fantasi atau kebutuhan pribadi NPC.
+  - Tingkat kesulitan terbagi menjadi "Easy", "Medium", dan "Hard".
+  - Quest "Hard" harus lebih jarang muncul (maksimal 20% dari total quest).
+  - Poin per tingkat kesulitan:
+    - Easy: +2 poin
+    - Medium: +4 poin
+    - Hard: +15 poin, serta achievement.
+  - Respons harus *hanya* dalam format JSON tanpa teks atau format tambahan.
 
-    Buat respons dalam format JSON seperti di bawah ini:
-    [
-      {
-        "id": "1"
-        "quest": {
-          "title": "Judul quest",
-          "description": "Deskripsi quest.",
-          "difficulty": "Easy", // atau Medium
-          "points": 2, // atau 4
-          "achievement": null // untuk Easy dan Medium
-        }
-      },
-      {
-        "id": "2"
-        "quest": {
-          "title": "Judul quest Hard",
-          "description": "Deskripsi quest Hard.",
-          "difficulty": "Hard",
-          "points": 15,
-          "achievement": "Nama Achievement"
-        }
+  Contoh format JSON yang diinginkan:
+  [
+    {
+      "id": "1",
+      "quest": {
+        "title": "Judul quest",
+        "description": "Deskripsi quest terkait kegiatan di dunia nyata, seperti membantu seseorang, mengumpulkan bahan yang ada di lingkungan sekitar, atau menyelesaikan tugas umum.",
+        "difficulty": "Easy",
+        "points": 2,
+        "achievement": null
       }
-    ]
-    Ingatlah untuk memastikan bahwa quest dengan tingkat kesulitan "Hard" tidak lebih dari 20% dari total quest yang dihasilkan.
+    },
+    {
+      "id": "2",
+      "quest": {
+        "title": "Judul quest Hard",
+        "description": "Deskripsi quest Hard yang mengacu pada tantangan nyata di bumi, seperti menyelesaikan masalah lingkungan atau membantu komunitas.",
+        "difficulty": "Hard",
+        "points": 15,
+        "achievement": "Nama Achievement"
+      }
+    }
+  ]
 `;
 
   try {
