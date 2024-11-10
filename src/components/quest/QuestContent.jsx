@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { generateQuest } from "../../services/geminiApiServices";
-import { useNpcData } from "../../hooks/useNpcData";
-import NpcSelector from "../common/SelectNpc";
 import QuestList from "./QuestList";
+import { useNpcData } from "../../hooks/useNpcData";
+import { generateQuest } from "../../services/geminiApiServices";
+import SelectNpc from "./SelectNpc";
 
 export default function QuestContent() {
   const { npcData, selectedNpc, handleNpcChange } = useNpcData();
@@ -16,7 +16,7 @@ export default function QuestContent() {
     setLoading(true);
     setError(null);
     try {
-      const responseJson = await generateQuest(selectedNpc);
+      const responseJson = await generateQuest(selectedNpc, npcData);
       const questsWithId = responseJson.map((questObj, index) => ({
         id: index,
         ...questObj,
@@ -24,7 +24,7 @@ export default function QuestContent() {
       setQuests(questsWithId);
     } catch (error) {
       console.error(error);
-      setError("Gagal menghasilkan quest. Silakan coba lagi.");
+      setError("Gagal mencari quest. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
@@ -48,19 +48,13 @@ export default function QuestContent() {
 
   return (
     <div className="container mx-auto mb-8 mt-3 min-h-screen px-4">
-      <h1 className="mb-4 text-3xl font-bold">Quest NPC</h1>
-      <NpcSelector
+      <SelectNpc
         npcData={npcData}
         selectedNpc={selectedNpc}
         handleNpcChange={handleNpcChange}
+        handleSearchQuests={generateQuestHandler}
+        loading={loading}
       />
-      <button
-        onClick={generateQuestHandler}
-        disabled={loading || !selectedNpc}
-        className="mt-2 rounded-md bg-blue-500 px-4 py-2 text-white disabled:bg-gray-400"
-      >
-        {loading ? "Menghasilkan..." : "Generate Quest"}
-      </button>
       {error && <p className="mt-4 text-red-500">{error}</p>}
       {quests.length > 0 && (
         <QuestList

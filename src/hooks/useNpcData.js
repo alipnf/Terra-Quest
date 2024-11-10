@@ -20,10 +20,8 @@ export const useNpcData = () => {
     fetchNpcData();
   }, []);
 
-  const handleNpcChange = (event) => {
-    const selectedNpcName = event.target.value;
-    const npc = npcData.find((npc) => npc.name === selectedNpcName);
-    setSelectedNpc(npc);
+  const handleNpcChange = (npcName) => {
+    setSelectedNpc(npcName);
   };
 
   return { npcData, selectedNpc, handleNpcChange };
