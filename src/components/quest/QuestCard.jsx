@@ -37,7 +37,7 @@ export default function QuestCard({
           </span>
           <span className="text-sm">Poin: {quest.points}</span>
         </div>
-        <p className="text-gray-600">{quest.description}</p>
+        <p>{quest.description}</p>
         <div className="card-actions mt-3 justify-between">
           <button
             className={`btn ${isTaken ? "btn-secondary" : "btn-primary"}`}
