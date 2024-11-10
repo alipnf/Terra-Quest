@@ -40,7 +40,10 @@ export default function QuestContent() {
     setQuests((prevQuests) =>
       prevQuests.map((questObj) =>
         questObj.id === questId
-          ? { ...questObj, quest: { ...questObj.quest, status: "taken" } }
+          ? {
+              ...questObj,
+              quest: { ...questObj.quest, status: "Sedang dikerjakan" },
+            }
           : questObj,
       ),
     );

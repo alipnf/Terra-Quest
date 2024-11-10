@@ -47,6 +47,9 @@ export default function QuestCard({
             {isTaken ? "Quest Diambil" : "Ambil Quest"}
           </button>
           <button className="btn btn-outline">Tanya NPC</button>
+          {isTaken && (
+            <button className="btn btn-success">Quest Selesai</button>
+          )}
         </div>
       </div>
     </div>
