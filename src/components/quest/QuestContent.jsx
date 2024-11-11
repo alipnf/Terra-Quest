@@ -1,72 +1,34 @@
-import { useState } from "react";
-import QuestList from "./QuestList";
-import { useNpcData } from "../../hooks/useNpcData";
-import { generateQuest } from "../../services/geminiApiServices";
+import { useEffect } from "react";
+import { useQuestStore } from "../../stores/useQuestStore";
 import SelectNpc from "./SelectNpc";
+import QuestList from "./QuestList";
+import { useFetch } from "../../hooks/useFetch";
+import { useState } from "react";
 
 export default function QuestContent({ setTheme }) {
-  const { npcData, selectedNpc, handleNpcChange } = useNpcData();
-  const [quests, setQuests] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { quests, setNpcData, npcData } = useQuestStore();
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
-  const generateQuestHandler = async () => {
-    if (!selectedNpc) return;
-
-    setLoading(true);
-    setError(null);
-    try {
-      const responseJson = await generateQuest(selectedNpc, npcData);
-      const questsWithId = responseJson.map((questObj, index) => ({
-        id: index,
-        ...questObj,
-      }));
-      setQuests(questsWithId);
-    } catch (error) {
-      console.error(error);
-      setError("Gagal mencari quest. Silakan coba lagi.");
-    } finally {
-      setLoading(false);
+  const { data, loading, error } = useFetch(
+    !isDataFetched ? "https://672b14f7976a834dd0258331.mockapi.io/npc" : null,
+  );
+  useEffect(() => {
+    if (data) {
+      setNpcData(data);
+      setIsDataFetched(true);
     }
-  };
+  }, [data, setNpcData]);
 
-  const handleDeleteQuest = (questId) => {
-    setQuests((prevQuests) =>
-      prevQuests.filter((questObj) => questObj.id !== questId),
-    );
-  };
-
-  const handleTakeQuest = (questId) => {
-    setQuests((prevQuests) =>
-      prevQuests.map((questObj) =>
-        questObj.id === questId
-          ? {
-              ...questObj,
-              quest: { ...questObj.quest, status: "Sedang dikerjakan" },
-            }
-          : questObj,
-      ),
-    );
-  };
-
+  if (npcData.length === 0 && loading) {
+    return <div className="min-h-screen">Loading NPC data...</div>;
+  }
   return (
     <div className="container mx-auto mb-8 mt-3 min-h-screen px-4">
-      <SelectNpc
-        npcData={npcData}
-        selectedNpc={selectedNpc}
-        handleNpcChange={handleNpcChange}
-        handleSearchQuests={generateQuestHandler}
-        loading={loading}
-        setTheme={setTheme}
-      />
+      <SelectNpc setTheme={setTheme} />
+
       {error && <p className="mt-4 text-red-500">{error}</p>}
-      {quests.length > 0 && (
-        <QuestList
-          sortedQuests={quests}
-          handleDeleteQuest={handleDeleteQuest}
-          handleTakeQuest={handleTakeQuest}
-        />
-      )}
+
+      {quests && quests.length > 0 && <QuestList />}
     </div>
   );
 }
