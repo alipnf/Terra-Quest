@@ -1,7 +1,9 @@
 import { useQuestStore } from "../../stores/useQuestStore";
+import { Link } from "react-router-dom";
 
 export default function QuestCard({ questItem, isTaken }) {
-  const { onDeleteQuest, onTakeQuest, onCompleteQuest } = useQuestStore();
+  const { onDeleteQuest, onTakeQuest, onCompleteQuest, setQuestById } =
+    useQuestStore();
   const { quest } = questItem;
 
   return (
@@ -36,7 +38,13 @@ export default function QuestCard({ questItem, isTaken }) {
           >
             {isTaken ? "Quest Diambil" : "Ambil Quest"}
           </button>
-          <button className="btn btn-outline">Tanya NPC</button>
+          <Link
+            to={`/quest/${questItem.id}`}
+            className="btn btn-outline"
+            onClick={() => setQuestById(questItem)}
+          >
+            Tanya NPC
+          </Link>
           {isTaken && (
             <button
               className="btn btn-success"
