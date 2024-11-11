@@ -1,6 +1,9 @@
 import ListItem from "./ListItem";
+import { useNpcStore } from "../../stores/useNpcStore";
 
-export default function NpcInfo({ selectedNpc }) {
+export default function NpcInfo() {
+  const { selectedNpc } = useNpcStore();
+
   return (
     <div className="card mb-8 w-full bg-neutral shadow-md">
       <div className="card-body text-neutral-content">
