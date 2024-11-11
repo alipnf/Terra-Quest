@@ -1,39 +1,51 @@
 import { useState, useEffect } from "react";
 import { Leaf, Zap, RefreshCw, Search } from "lucide-react";
+import { generateQuest } from "../../services/geminiApiServices";
+import { useQuestStore } from "../../stores/useQuestStore";
 
-export default function SelectNpc({
-  npcData,
-  selectedNpc,
-  handleNpcChange,
-  handleSearchQuests,
-  loading,
-  setTheme,
-}) {
-  const [selectedNPC, setSelectedNPC] = useState(selectedNpc);
+export default function SelectNpc({ setTheme }) {
+  const { npcData, selectedNpc, setSelectedNpc, setQuests } = useQuestStore();
+  const [loading, setLoading] = useState(false);
+
+  const generateQuestHandler = async () => {
+    if (!selectedNpc) return;
+
+    setLoading(true);
+    try {
+      const responseJson = await generateQuest(selectedNpc, npcData);
+      const questsWithId = responseJson.map((questObj, index) => ({
+        id: index,
+        ...questObj,
+      }));
+      setQuests(questsWithId);
+    } catch (err) {
+      console.error(err);
+      useQuestStore
+        .getState()
+        .setError("Gagal mencari quest. Silakan coba lagi.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const npcTheme = npcData.find((npc) => npc.name === selectedNPC)?.theme;
-    if (!npcTheme) return;
-    setTheme(npcTheme);
-  }, [npcData, selectedNPC, setTheme]);
-
-  useEffect(() => {
-    setSelectedNPC(selectedNpc);
-  }, [selectedNpc]);
+    const npcTheme = npcData.find((npc) => npc.name === selectedNpc)?.theme;
+    if (npcTheme) {
+      setTheme(npcTheme);
+    }
+  }, [npcData, selectedNpc, setTheme]);
 
   const handleNPCSelection = (npcName) => {
-    setSelectedNPC(npcName);
-    handleNpcChange(npcName); // Mengirimkan nama NPC ke `handleNpcChange`
+    setSelectedNpc(npcName);
   };
 
   const resetNPCSelection = () => {
-    setSelectedNPC(null);
-    handleNpcChange(null); // Reset NPC yang dipilih
+    setSelectedNpc(null);
   };
 
   return (
     <div className="text-center mb-8">
-      {!selectedNPC ? (
+      {!selectedNpc ? (
         <>
           <p className="text-xl mb-4">Pilih NPC yang akan membimbingmu:</p>
           <div className="flex justify-center gap-4">
@@ -56,15 +68,15 @@ export default function SelectNpc({
       ) : (
         <div className="card bg-base-100 shadow-lg p-4">
           <div className="card-header flex items-center mb-2">
-            {selectedNPC === "Greenia" ? (
+            {selectedNpc === "Greenia" ? (
               <Leaf className="w-6 h-6 mr-2 text-green-600" />
             ) : (
               <Zap className="w-6 h-6 mr-2 text-blue-600" />
             )}
-            <h3 className="text-lg font-semibold">{selectedNPC}</h3>
+            <h3 className="text-lg font-semibold">{selectedNpc}</h3>
           </div>
           <div className="card-body">
-            <p>{getNPCWelcomeMessage(selectedNPC)}</p>
+            <p>{getNPCWelcomeMessage(selectedNpc)}</p>
           </div>
           <div className="card-footer flex justify-between mt-4">
             <button className="btn btn-outline" onClick={resetNPCSelection}>
@@ -73,7 +85,7 @@ export default function SelectNpc({
             </button>
             <button
               className="btn btn-primary"
-              onClick={() => handleSearchQuests(npcData)}
+              onClick={generateQuestHandler}
               disabled={loading || !selectedNpc}
             >
               <Search className="w-4 h-4 mr-2" />
