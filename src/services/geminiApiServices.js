@@ -57,3 +57,49 @@ export const generateQuest = async (npc, npcData) => {
     throw error;
   }
 };
+
+export const initializeChat = (npcData, selectedQuest, selectedNpc) => {
+  const questTitle = selectedQuest?.quest?.title || "quest tidak terdefinisi";
+  const questDescription =
+    selectedQuest?.quest?.description || "deskripsi quest tidak terdefinisi";
+
+  console.log(selectedNpc);
+
+  const promptUser = `
+  Anda adalah NPC bernama ${selectedNpc} dengan karakteristik: ${npcData}.
+  anda akan memberikan jawaban sesuai deskripsi atau sifat anda yang ada di data diatas.
+  anda sedang memberi quest berjudul "${questTitle}" dengan deskripsi seperti ini:
+  "${questDescription}"
+
+  saya akan tanyakan apa saja tentang quest ini, dan anda akan berusaha memberikan informasi yang kamu butuhkan. 
+  Jika pertanyaan saya tidak terkait dengan konteksnya, anda tidak bisa memberikan jawaban.
+`;
+
+  const promptModel = `
+  Halo, saya ${selectedNpc}. Ada yang bisa saya bantu tentang quest "${questTitle}"?
+  Jangan ragu untuk bertanya, saya siap membantu dengan apa pun yang berhubungan dengan quest ini! 
+  Jika pertanyaan kamu tidak terkait dengan konteksnya atau tidak berhubungan sama sekali dengan questTitle
+  saya tidak bisa memberikan jawaban.
+`;
+
+  return model.startChat({
+    history: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: `${promptUser}`,
+          },
+        ],
+      },
+      {
+        role: "model",
+        parts: [
+          {
+            text: `${promptModel}`,
+          },
+        ],
+      },
+    ],
+  });
+};
