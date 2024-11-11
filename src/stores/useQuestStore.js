@@ -6,6 +6,7 @@ export const useQuestStore = create((set) => ({
   npcData: [],
   selectedNpc: null,
   error: null,
+  selectedQuest: [],
 
   setError: (message) => set({ error: message }),
 
@@ -46,4 +47,6 @@ export const useQuestStore = create((set) => ({
       ),
       takenQuests: state.takenQuests.filter((id) => id !== questId),
     })),
+
+  setQuestById: (quest) => set({ selectedQuest: quest }),
 }));

@@ -6,6 +6,7 @@ import Footer from "./components/layout/Footer";
 import Quest from "./pages/Quest";
 import Achievements from "./pages/Achievements";
 import { useState, useEffect } from "react";
+import QuestDetail from "./components/quest/QuestDetail";
 
 export default function App() {
   const [theme, setTheme] = useState(
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/npc" element={<NpcDetail />} />
         <Route path="/quest" element={<Quest setTheme={setTheme} />} />
+        <Route path="/quest/:id" element={<QuestDetail />} />
         <Route path="/achievements" element={<Achievements />} />
       </Routes>
       <Footer />
