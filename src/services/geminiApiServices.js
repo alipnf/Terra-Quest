@@ -3,10 +3,11 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-export const generateQuest = async (npc, npcData) => {
+export const generateQuest = async (npc, npcData, quest) => {
   const prompt = `
   Anda adalah NPC bernama ${JSON.stringify(npc)} dengan karakteristik: ${JSON.stringify(npcData)}.
   Tugas Anda adalah membuat beberapa quest unik yang sesuai dengan dunia nyata (bumi) saat ini.
+  buat unik dari id dan quest jangan samakan pada ${JSON.stringify(quest)}
   
   Instruksi:
   - Quest harus terkait dengan aktivitas atau tantangan yang mungkin ditemukan di lingkungan sehari-hari pada bumi, bukan dunia fantasi atau kebutuhan pribadi NPC.

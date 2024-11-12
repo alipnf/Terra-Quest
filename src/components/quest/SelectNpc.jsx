@@ -5,14 +5,17 @@ import { useQuestStore } from "../../stores/useQuestStore";
 import { useShallow } from "zustand/react/shallow";
 
 export default function SelectNpc({ setTheme }) {
-  const { npcData, selectedNpc, setSelectedNpc, setQuests } = useQuestStore(
-    useShallow((state) => ({
-      setSelectedNpc: state.setSelectedNpc,
-      npcData: state.npcData,
-      selectedNpc: state.selectedNpc,
-      setQuests: state.setQuests,
-    })),
-  );
+  const { quest, npcData, selectedNpc, setSelectedNpc, addQuests } =
+    useQuestStore(
+      useShallow((state) => ({
+        quest: state.quests,
+        setSelectedNpc: state.setSelectedNpc,
+        npcData: state.npcData,
+        selectedNpc: state.selectedNpc,
+        addQuests: state.addQuests,
+      })),
+    );
+
   const [loading, setLoading] = useState(false);
 
   const generateQuestHandler = async () => {
@@ -20,12 +23,11 @@ export default function SelectNpc({ setTheme }) {
 
     setLoading(true);
     try {
-      const responseJson = await generateQuest(selectedNpc, npcData);
-      const questsWithId = responseJson.map((questObj, index) => ({
-        id: index,
+      const responseJson = await generateQuest(selectedNpc, npcData, quest);
+      const questsWithId = responseJson.map((questObj) => ({
         ...questObj,
       }));
-      setQuests(questsWithId);
+      addQuests(questsWithId);
     } catch (err) {
       console.error(err);
       useQuestStore

@@ -22,9 +22,19 @@ const questStore = (set) => ({
       selectedNpc: npcName,
     }),
 
-  setQuests: (quests) => set({ quests }),
+  addQuests: (newQuests) =>
+    set((state) => {
+      const existingQuests = state.quests.filter(
+        (quest) => quest.status === "Sedang dikerjakan",
+      );
 
-  addQuest: (quest) => set((state) => ({ quests: [...state.quests, quest] })),
+      const uniqueNewQuests = newQuests.filter(
+        (newQuest) => !existingQuests.some((quest) => quest.id === newQuest.id),
+      );
+
+      const updatedQuests = [...existingQuests, ...uniqueNewQuests];
+      return { quests: updatedQuests };
+    }),
 
   onDeleteQuest: (questId) =>
     set((state) => ({

@@ -2,22 +2,31 @@ import { useQuestStore } from "../../stores/useQuestStore";
 import { Link } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
 
-export default function QuestCard({ questItem, isTaken }) {
-  const { onDeleteQuest, onTakeQuest, onCompleteQuest, setQuestById } =
-    useQuestStore(
-      useShallow((state) => ({
-        ondeleteQuest: state.onDeleteQuest,
-        onTakeQuest: state.onTakeQuest,
-        onCompleteQuest: state.onCompleteQuest,
-        setQuestById: state.setQuestById,
-      })),
-    );
+export default function QuestCard({ questItem }) {
+  const {
+    onDeleteQuest,
+    onTakeQuest,
+    onCompleteQuest,
+    setQuestById,
+    takenQuests,
+  } = useQuestStore(
+    useShallow((state) => ({
+      onDeleteQuest: state.onDeleteQuest,
+      onTakeQuest: state.onTakeQuest,
+      onCompleteQuest: state.onCompleteQuest,
+      setQuestById: state.setQuestById,
+      takenQuests: state.takenQuests,
+    })),
+  );
+
   const { quest } = questItem;
+  const isTaken = takenQuests.includes(questItem.id);
+  const isInProgress = questItem.status === "Sedang dikerjakan"; // Cek status
 
   return (
     <div
       key={questItem.id}
-      className={`card border bg-base-100 shadow-lg ${isTaken ? "border-green-500" : ""}`}
+      className={`card border bg-base-100 shadow-lg ${isInProgress ? "border-green-500" : ""}`}
     >
       <div className="card-body">
         <div className="flex items-start justify-between">
@@ -40,9 +49,9 @@ export default function QuestCard({ questItem, isTaken }) {
         <p>{quest.description}</p>
         <div className="card-actions mt-3 justify-between">
           <button
-            className={`btn ${isTaken ? "btn-secondary" : "btn-primary"}`}
+            className={`btn ${!isInProgress ? "btn-secondary" : "btn-primary"}`}
             onClick={() => onTakeQuest(questItem.id)}
-            disabled={isTaken}
+            disabled={isInProgress}
           >
             {isTaken ? "Quest Diambil" : "Ambil Quest"}
           </button>
