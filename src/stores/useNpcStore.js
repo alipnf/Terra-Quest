@@ -1,5 +1,7 @@
 import { create } from "zustand";
-export const useNpcStore = create((set) => ({
+import { persist } from "zustand/middleware";
+
+const npcStore = (set) => ({
   npcData: [],
   selectedNpc: null,
 
@@ -9,4 +11,6 @@ export const useNpcStore = create((set) => ({
     set((state) => ({
       selectedNpc: state.npcData.find((npc) => npc.name === npcName) || null,
     })),
-}));
+});
+
+export const useNpcStore = create(persist(npcStore, { name: "npc-store" }));

@@ -1,6 +1,7 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useQuestStore = create((set) => ({
+const questStore = (set) => ({
   quests: [],
   takenQuests: [],
   npcData: [],
@@ -49,4 +50,10 @@ export const useQuestStore = create((set) => ({
     })),
 
   setQuestById: (quest) => set({ selectedQuest: quest }),
-}));
+});
+
+export const useQuestStore = create(
+  persist(questStore, {
+    name: "quest-store",
+  }),
+);
