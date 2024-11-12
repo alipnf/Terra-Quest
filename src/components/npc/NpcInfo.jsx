@@ -1,8 +1,11 @@
 import ListItem from "./ListItem";
 import { useNpcStore } from "../../stores/useNpcStore";
+import { useShallow } from "zustand/react/shallow";
 
 export default function NpcInfo() {
-  const { selectedNpc } = useNpcStore();
+  const { selectedNpc } = useNpcStore(
+    useShallow((state) => ({ selectedNpc: state.selectedNpc })),
+  );
 
   return (
     <div className="card mb-8 w-full bg-neutral shadow-md">

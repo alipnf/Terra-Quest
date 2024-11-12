@@ -1,11 +1,20 @@
 import { useQuestStore } from "../../stores/useQuestStore";
 import { Link } from "react-router-dom";
+import { useShallow } from "zustand/react/shallow";
 
 export default function QuestCard({ questItem, isTaken }) {
   const { onDeleteQuest, onTakeQuest, onCompleteQuest, setQuestById } =
-    useQuestStore();
+    useQuestStore(
+      useShallow((state) => ({
+        ondeleteQuest: state.onDeleteQuest,
+        onTakeQuest: state.onTakeQuest,
+        onCompleteQuest: state.onCompleteQuest,
+        setQuestById: state.setQuestById,
+      })),
+    );
   const { quest } = questItem;
 
+  console.log("render quests card");
   return (
     <div
       key={questItem.id}

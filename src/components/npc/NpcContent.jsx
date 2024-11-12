@@ -1,11 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useNpcStore } from "../../stores/useNpcStore";
 import NpcInfo from "./NpcInfo";
 import QuestItem from "./QuestItem";
+import React, { useEffect, useState } from "react";
+import { useNpcStore } from "../../stores/useNpcStore";
 import { useFetch } from "../../hooks/useFetch";
+import { useShallow } from "zustand/react/shallow";
 
 export default function NpcContent() {
-  const { npcData, selectedNpc, setNpcData, selectNpc } = useNpcStore();
+  const { npcData, selectedNpc, setNpcData, selectNpc } = useNpcStore(
+    useShallow((state) => ({
+      npcData: state.npcData,
+      selectedNpc: state.selectedNpc,
+      setNpcData: state.setNpcData,
+      selectNpc: state.selectNpc,
+    })),
+  );
+
   const [isDataFetched, setIsDataFetched] = useState(false);
 
   const { data, loading, error } = useFetch(

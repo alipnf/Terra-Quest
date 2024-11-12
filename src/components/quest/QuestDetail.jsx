@@ -1,15 +1,23 @@
-import { useState, useEffect } from "react";
 import ChatBubble from "./ChatBubble";
+import InputChat from "./InputChat";
+import { useState, useEffect } from "react";
 import { useQuestStore } from "../../stores/useQuestStore";
 import { initializeChat } from "../../services/geminiApiServices";
-import InputChat from "./InputChat";
+import { useShallow } from "zustand/react/shallow";
 
 export default function QuestDetail() {
-  const { selectedNpc, npcData, selectedQuest } = useQuestStore();
+  const { selectedNpc, npcData, selectedQuest } = useQuestStore(
+    useShallow((state) => ({
+      setSelectedNpc: state.selectedNpc,
+      npcData: state.npcData,
+      selectedQuest: state.selectedQuest,
+    })),
+  );
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [chat, setChat] = useState(null);
-
+  console.log("render QuestDetail");
   useEffect(() => {
     if (npcData && selectedQuest && !chat) {
       const newChat = initializeChat(npcData, selectedQuest, selectedNpc);
