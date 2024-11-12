@@ -4,6 +4,7 @@ export default function InputChat({ handleSendMessage, setInput, input }) {
   const inputChat = useRef();
   useEffect(() => {
     inputChat.current.focus();
+    window.scrollTo(0, 0);
   }, []);
 
   return (

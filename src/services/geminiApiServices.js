@@ -64,8 +64,6 @@ export const initializeChat = (npcData, selectedQuest, selectedNpc) => {
   const questDescription =
     selectedQuest?.quest?.description || "deskripsi quest tidak terdefinisi";
 
-  console.log(selectedNpc);
-
   const promptUser = `
   Anda adalah NPC bernama ${selectedNpc} dengan karakteristik: ${npcData}.
   anda akan memberikan jawaban sesuai deskripsi atau sifat anda yang ada di data diatas.

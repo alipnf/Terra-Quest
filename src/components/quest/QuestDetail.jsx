@@ -8,7 +8,7 @@ import { useShallow } from "zustand/react/shallow";
 export default function QuestDetail() {
   const { selectedNpc, npcData, selectedQuest } = useQuestStore(
     useShallow((state) => ({
-      setSelectedNpc: state.selectedNpc,
+      selectedNpc: state.selectedNpc,
       npcData: state.npcData,
       selectedQuest: state.selectedQuest,
     })),
@@ -17,9 +17,9 @@ export default function QuestDetail() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [chat, setChat] = useState(null);
-  console.log("render QuestDetail");
+
   useEffect(() => {
-    if (npcData && selectedQuest && !chat) {
+    if (npcData && selectedQuest && selectedNpc && !chat) {
       const newChat = initializeChat(npcData, selectedQuest, selectedNpc);
       setChat(newChat);
     }
