@@ -11,7 +11,6 @@ export default function QuestList() {
     })),
   );
 
-  console.log("render QuestList");
   return (
     <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {quests

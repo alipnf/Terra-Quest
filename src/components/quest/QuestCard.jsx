@@ -14,7 +14,6 @@ export default function QuestCard({ questItem, isTaken }) {
     );
   const { quest } = questItem;
 
-  console.log("render quests card");
   return (
     <div
       key={questItem.id}

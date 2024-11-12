@@ -19,8 +19,6 @@ export default function QuestContent({ setTheme }) {
     !isDataFetched ? "https://672b14f7976a834dd0258331.mockapi.io/npc" : null,
   );
 
-  console.log("render quests content");
-
   useEffect(() => {
     if (data) {
       setNpcData(data);

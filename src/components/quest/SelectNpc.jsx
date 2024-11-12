@@ -13,7 +13,6 @@ export default function SelectNpc({ setTheme }) {
       setQuests: state.setQuests,
     })),
   );
-  console.log("render selectNpc ");
   const [loading, setLoading] = useState(false);
 
   const generateQuestHandler = async () => {
