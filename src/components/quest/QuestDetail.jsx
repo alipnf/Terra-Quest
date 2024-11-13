@@ -3,7 +3,7 @@ import InputChat from "./InputChat";
 import { useState, useEffect } from "react";
 import { useQuestStore } from "../../stores/useQuestStore";
 import { useShallow } from "zustand/react/shallow";
-import { initializeChat } from "../../gemini/geminiApiServices";
+import { initializeChat } from "../../services/gemini/geminiApiServices";
 
 export default function QuestDetail() {
   const { selectedNpc, npcData, selectedQuest } = useQuestStore(
