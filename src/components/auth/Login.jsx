@@ -39,7 +39,8 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="card xl:w-4/12 bg-base-100 shadow-xl">
         <div className="card-body">
-          <p className="card-title">Masuk untuk melanjutkan petualanganmu</p>
+          <p className="card-title">Selamat datang di TerraQuest</p>
+          <p>Masuk untuk melanjutkan petualanganmu</p>
           <form onSubmit={handleSubmit}>
             <div className="grid w-full gap-4">
               <div className="form-control">
