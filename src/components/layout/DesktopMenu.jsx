@@ -14,9 +14,15 @@ export default function DesktopMenu({ user, openLogoutModal }) {
   return (
     <div className="hidden md:flex gap-3">
       <IconLink to="/" icon={Home} label="Beranda" />
-      <IconLink to="/quest" icon={ScrollText} label="Quest" />
-      <IconLink to="/npc" icon={Bot} label="Detail NPC" />
-      <IconLink to="/achievements" icon={Trophy} label="Pencapaian" />
+
+      {/* Menambahkan pengecekan user */}
+      {user && (
+        <>
+          <IconLink to="/quest" icon={ScrollText} label="Quest" />
+          <IconLink to="/npc" icon={Bot} label="Detail NPC" />
+          <IconLink to="/achievements" icon={Trophy} label="Pencapaian" />
+        </>
+      )}
 
       <div className="flex items-center">
         {user ? (

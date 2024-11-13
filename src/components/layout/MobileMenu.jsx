@@ -25,24 +25,29 @@ export default function MobileMenu({
       {isMenuOpen && (
         <div className="absolute right-0 top-full mt-8 w-max flex flex-col p-2 items-start rounded-lg bg-neutral shadow-lg z-10">
           <IconLink to="/" icon={Home} label="Beranda" onClick={toggleMenu} />
-          <IconLink
-            to="/quest"
-            icon={ScrollText}
-            label="Quest"
-            onClick={toggleMenu}
-          />
-          <IconLink
-            to="/npc"
-            icon={Bot}
-            label="Detail NPC"
-            onClick={toggleMenu}
-          />
-          <IconLink
-            to="/achievements"
-            icon={Trophy}
-            label="Pencapaian"
-            onClick={toggleMenu}
-          />
+
+          {user && (
+            <>
+              <IconLink
+                to="/quest"
+                icon={ScrollText}
+                label="Quest"
+                onClick={toggleMenu}
+              />
+              <IconLink
+                to="/npc"
+                icon={Bot}
+                label="Detail NPC"
+                onClick={toggleMenu}
+              />
+              <IconLink
+                to="/achievements"
+                icon={Trophy}
+                label="Pencapaian"
+                onClick={toggleMenu}
+              />
+            </>
+          )}
 
           {user ? (
             <>
