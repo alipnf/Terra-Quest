@@ -34,7 +34,7 @@ const userStore = (set) => ({
       );
       await updateProfile(userCredential.user, { displayName: name });
       set({ error: null });
-      callback("success");
+      callback(true); // Indikasikan register berhasil
     } catch (error) {
       console.error(error);
       let errorMessage = "Gagal mendaftar. Silakan coba lagi."; // Default error message
