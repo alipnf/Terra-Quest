@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Leaf, Zap, RefreshCw, Search } from "lucide-react";
-import { generateQuest } from "../../services/geminiApiServices";
 import { useQuestStore } from "../../stores/useQuestStore";
+import { generateQuest } from "../../gemini/geminiApiServices";
 import { useShallow } from "zustand/react/shallow";
 
 export default function SelectNpc({ setTheme }) {

@@ -2,8 +2,8 @@ import ChatBubble from "./ChatBubble";
 import InputChat from "./InputChat";
 import { useState, useEffect } from "react";
 import { useQuestStore } from "../../stores/useQuestStore";
-import { initializeChat } from "../../services/geminiApiServices";
 import { useShallow } from "zustand/react/shallow";
+import { initializeChat } from "../../gemini/geminiApiServices";
 
 export default function QuestDetail() {
   const { selectedNpc, npcData, selectedQuest } = useQuestStore(
