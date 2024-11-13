@@ -15,7 +15,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center p-5 justify-center">
+    <div className="md:min-h-screen flex items-center p-5 justify-center">
       <div className="card xl:w-4/12 bg-base-100 shadow-2xl">
         <div className="card-body">
           <p className="card-title">Selamat datang di TerraQuest</p>

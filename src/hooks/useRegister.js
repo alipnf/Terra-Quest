@@ -14,6 +14,10 @@ export function useRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password.length < 8) {
+      setError("Password harus minimal 8 karakter.");
+      return;
+    }
     await register(email, password, name, (status, errorMessage) => {
       if (status === true) {
         setShowSuccessModal(true);

@@ -36,6 +36,7 @@ export default function Register() {
                   onChange={(e) => setName(e.target.value)}
                   className="input input-bordered"
                   required
+                  placeholder="username"
                 />
               </div>
               <div className="form-control">
@@ -49,6 +50,7 @@ export default function Register() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="input input-bordered"
                   required
+                  placeholder="email@domain.com"
                 />
               </div>
               <div className="form-control">
@@ -61,6 +63,7 @@ export default function Register() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="input input-bordered"
+                  placeholder="password"
                   required
                 />
               </div>
