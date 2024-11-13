@@ -1,43 +1,22 @@
-import { useState, useEffect } from "react";
+import { useLogin } from "../../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../../stores/useUserstore";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../services/firebase/firebaseConfig";
 
 export default function Login() {
-  const { login, user, error, setUser, setError } = useUserStore();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    handleSubmit,
+    handleGoogleLogin,
+    error,
+  } = useLogin();
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login(email, password);
-  };
-
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      setUser(user);
-      navigate("/");
-    } catch (error) {
-      console.error("Error signing in with Google:", error);
-    }
-  };
-
-  useEffect(() => {
-    setError(null);
-  }, [setError]);
-
-  if (user) {
-    navigate("/"); // Redirect jika sudah login
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="card xl:w-4/12 bg-base-100 shadow-xl">
+    <div className="min-h-screen flex items-center p-5 justify-center">
+      <div className="card xl:w-4/12 bg-base-100 shadow-2xl">
         <div className="card-body">
           <p className="card-title">Selamat datang di TerraQuest</p>
           <p>Masuk untuk melanjutkan petualanganmu</p>
@@ -77,10 +56,8 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Menampilkan error jika ada */}
           {error && <div className="text-red-500 mt-2">{error}</div>}
 
-          {/* Tombol Login dengan Google */}
           <div className="mt-4">
             <button
               onClick={handleGoogleLogin}
@@ -90,7 +67,6 @@ export default function Login() {
             </button>
           </div>
 
-          {/* Tombol Register */}
           <div className="mt-4 text-center">
             <p>
               Belum punya akun?{" "}
