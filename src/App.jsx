@@ -7,6 +7,8 @@ import Quest from "./pages/Quest";
 import Achievements from "./pages/Achievements";
 import { useState, useEffect } from "react";
 import QuestDetail from "./components/quest/QuestDetail";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 
 export default function App() {
   const [theme, setTheme] = useState(
@@ -28,6 +30,8 @@ export default function App() {
         <Route path="/quest" element={<Quest setTheme={setTheme} />} />
         <Route path="/quest/:id" element={<QuestDetail />} />
         <Route path="/achievements" element={<Achievements />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
       <Footer />
     </Router>
