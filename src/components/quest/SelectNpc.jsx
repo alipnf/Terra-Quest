@@ -96,18 +96,31 @@ export default function SelectNpc({ setTheme }) {
           <div className="card-body">
             <p>{getNPCWelcomeMessage(selectedNpc)}</p>
           </div>
-          <div className="card-footer flex justify-between mt-4">
-            <button className="btn btn-outline" onClick={resetNPCSelection}>
+          <div className="card-footer flex flex-wrap justify-between mt-4 gap-2">
+            <button
+              className="btn btn-outline w-full sm:w-auto"
+              onClick={resetNPCSelection}
+              disabled={loading}
+            >
               <RefreshCw className="w-4 h-4 mr-2" />
               Pilih NPC Lain
             </button>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary w-full sm:w-auto"
               onClick={generateQuestHandler}
               disabled={loading || !selectedNpc}
             >
-              <Search className="w-4 h-4 mr-2" />
-              {loading ? "Mencari Quest..." : "Cari Quest"}
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner"></span>
+                  Mencari Quest...
+                </>
+              ) : (
+                <>
+                  <Search className="w-4 h-4 mr-2" />
+                  Cari Quest
+                </>
+              )}
             </button>
           </div>
         </div>
