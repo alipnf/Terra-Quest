@@ -1,74 +1,61 @@
-import { useState } from "react";
-import { generateQuest } from "../../services/geminiApiServices";
-import { useNpcData } from "../../hooks/useNpcData";
-import NpcSelector from "../common/SelectNpc";
+import SelectNpc from "./SelectNpc";
 import QuestList from "./QuestList";
+import { useEffect, useState } from "react";
+import { useQuestStore } from "../../stores/useQuestStore";
+import { useShallow } from "zustand/react/shallow";
+import { fetchNpcDataFromFirestore } from "../../services/firebase/npcDataServices";
+import { getOngoingQuests } from "../../services/firebase/questServices";
+import { useUserStore } from "../../stores/useUserstore";
 
-export default function QuestContent() {
-  const { npcData, selectedNpc, handleNpcChange } = useNpcData();
-  const [quests, setQuests] = useState([]);
-  const [loading, setLoading] = useState(false);
+export default function QuestContent({ setTheme }) {
+  const { quests, setNpcData, addQuests } = useQuestStore(
+    useShallow((state) => ({
+      setNpcData: state.setNpcData,
+      quests: state.quests,
+      addQuests: state.addQuests,
+    })),
+  );
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useUserStore();
 
-  const generateQuestHandler = async () => {
-    if (!selectedNpc) return;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const npcData = await fetchNpcDataFromFirestore();
+        setNpcData(npcData);
 
-    setLoading(true);
-    setError(null);
-    try {
-      const responseJson = await generateQuest(selectedNpc);
-      const questsWithId = responseJson.map((questObj, index) => ({
-        id: index,
-        ...questObj,
-      }));
-      setQuests(questsWithId);
-    } catch (error) {
-      console.error(error);
-      setError("Gagal menghasilkan quest. Silakan coba lagi.");
-    } finally {
-      setLoading(false);
-    }
-  };
+        if (user) {
+          const ongoingQuests = await getOngoingQuests(user.uid);
+          if (ongoingQuests.length > 0) {
+            addQuests(ongoingQuests);
+          }
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleDeleteQuest = (questId) => {
-    setQuests((prevQuests) =>
-      prevQuests.filter((questObj) => questObj.id !== questId),
-    );
-  };
+    fetchData();
+  }, [setNpcData, addQuests, user]);
 
-  const handleTakeQuest = (questId) => {
-    setQuests((prevQuests) =>
-      prevQuests.map((questObj) =>
-        questObj.id === questId
-          ? { ...questObj, quest: { ...questObj.quest, status: "taken" } }
-          : questObj,
-      ),
-    );
-  };
+  if (loading) {
+    return <div className="min-h-screen">Loading NPC data...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading NPC data: {error.message}</div>;
+  }
 
   return (
     <div className="container mx-auto mb-8 mt-3 min-h-screen px-4">
-      <h1 className="mb-4 text-3xl font-bold">Quest NPC</h1>
-      <NpcSelector
-        npcData={npcData}
-        selectedNpc={selectedNpc}
-        handleNpcChange={handleNpcChange}
-      />
-      <button
-        onClick={generateQuestHandler}
-        disabled={loading || !selectedNpc}
-        className="mt-2 rounded-md bg-blue-500 px-4 py-2 text-white disabled:bg-gray-400"
-      >
-        {loading ? "Menghasilkan..." : "Generate Quest"}
-      </button>
+      <SelectNpc setTheme={setTheme} />
+
       {error && <p className="mt-4 text-red-500">{error}</p>}
-      {quests.length > 0 && (
-        <QuestList
-          sortedQuests={quests}
-          handleDeleteQuest={handleDeleteQuest}
-          handleTakeQuest={handleTakeQuest}
-        />
-      )}
+
+      {quests && quests.length > 0 && <QuestList />}
     </div>
   );
 }

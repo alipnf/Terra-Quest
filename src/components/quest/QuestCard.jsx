@@ -1,17 +1,33 @@
-export default function QuestCard({
-  questItem,
-  isTaken,
-  onTakeQuest,
-  onDeleteQuest,
-}) {
+import { Award } from "lucide-react";
+import { useQuestStore } from "../../stores/useQuestStore";
+import { Link } from "react-router-dom";
+import { useShallow } from "zustand/react/shallow";
+
+export default function QuestCard({ questItem }) {
+  const {
+    onDeleteQuest,
+    onTakeQuest,
+    onCompleteQuest,
+    setQuestById,
+    takenQuests,
+  } = useQuestStore(
+    useShallow((state) => ({
+      onDeleteQuest: state.onDeleteQuest,
+      onTakeQuest: state.onTakeQuest,
+      onCompleteQuest: state.onCompleteQuest,
+      setQuestById: state.setQuestById,
+      takenQuests: state.takenQuests,
+    })),
+  );
+
   const { quest } = questItem;
+  const isTaken = takenQuests.includes(questItem.id);
+  const isInProgress = questItem.status === "Sedang dikerjakan";
 
   return (
     <div
       key={questItem.id}
-      className={`card border bg-base-100 shadow-lg ${
-        isTaken ? "border-green-500" : ""
-      }`}
+      className={`card border bg-base-100 shadow-lg ${isInProgress ? "border-green-500" : ""}`}
     >
       <div className="card-body">
         <div className="flex items-start justify-between">
@@ -25,28 +41,45 @@ export default function QuestCard({
         </div>
         <div className="mb-2 flex items-center space-x-2">
           <span
-            className={`badge ${
-              quest.difficulty === "Easy"
-                ? "badge-secondary"
-                : quest.difficulty === "Medium"
-                  ? "badge-primary"
-                  : "badge-error"
-            }`}
+            className={`badge ${quest.difficulty === "Easy" ? "badge-secondary" : quest.difficulty === "Medium" ? "badge-primary" : "badge-error"}`}
           >
             {quest.difficulty}
           </span>
           <span className="text-sm">Poin: {quest.points}</span>
         </div>
-        <p className="text-gray-600">{quest.description}</p>
+        <p>{quest.description}</p>
+
+        {quest.achievement && (
+          <div className="mt-2">
+            <span className="flex items-center">
+              <Award className="w-4 h-4 mr-2" />
+              {quest.achievement}
+            </span>
+          </div>
+        )}
         <div className="card-actions mt-3 justify-between">
           <button
-            className={`btn ${isTaken ? "btn-secondary" : "btn-primary"}`}
+            className={`btn ${!isInProgress ? "btn-secondary" : "btn-primary"}`}
             onClick={() => onTakeQuest(questItem.id)}
-            disabled={isTaken}
+            disabled={isInProgress}
           >
             {isTaken ? "Quest Diambil" : "Ambil Quest"}
           </button>
-          <button className="btn btn-outline">Tanya NPC</button>
+          <Link
+            to={`/quest/${questItem.id}`}
+            className="btn btn-outline"
+            onClick={() => setQuestById(questItem)}
+          >
+            Tanya NPC
+          </Link>
+          {isInProgress && (
+            <button
+              className="btn btn-success"
+              onClick={() => onCompleteQuest(questItem.id)}
+            >
+              Quest Selesai
+            </button>
+          )}
         </div>
       </div>
     </div>
