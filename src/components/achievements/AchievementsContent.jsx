@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import AchievementsCard from "./AchievementsCard";
 import TotalPoints from "./TotalPoints";
-import CompletedMissionItem from "./CompletedMissionItem";
 import AchievementItem from "./AchievementItem";
 import { getCompletedQuests } from "../../services/firebase/questServices"; // Pastikan path ini sesuai
 import { useUserStore } from "../../stores/useUserstore";
+import CompletedQuestItem from "./CompletedQuestItem";
 
 export default function CompletedMissions() {
   const [completedMissions, setCompletedMissions] = useState([]);
@@ -68,7 +68,7 @@ export default function CompletedMissions() {
 
       <div className="grid gap-8 md:grid-cols-2">
         <AchievementsCard>
-          <CompletedMissionItem mission={completedMissions} />
+          <CompletedQuestItem mission={completedMissions} />
         </AchievementsCard>
 
         <AchievementsCard>
