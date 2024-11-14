@@ -1,3 +1,4 @@
+import { Award } from "lucide-react";
 import { useQuestStore } from "../../stores/useQuestStore";
 import { Link } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
@@ -47,6 +48,15 @@ export default function QuestCard({ questItem }) {
           <span className="text-sm">Poin: {quest.points}</span>
         </div>
         <p>{quest.description}</p>
+
+        {quest.achievement && (
+          <div className="mt-2">
+            <span className="flex items-center">
+              <Award className="w-4 h-4 mr-2" />
+              {quest.achievement}
+            </span>
+          </div>
+        )}
         <div className="card-actions mt-3 justify-between">
           <button
             className={`btn ${!isInProgress ? "btn-secondary" : "btn-primary"}`}
