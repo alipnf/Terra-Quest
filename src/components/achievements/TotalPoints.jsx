@@ -11,12 +11,9 @@ export default function TotalPoints({ totalPoints }) {
 
   return (
     <>
-      <h2 className="card-title text-center item-center">
-        Total Poin & Peringkat
-      </h2>
-      <p className="text-center text-4xl font-bold">{totalPoints} p</p>
-      <p className="text-center text-2xl font-semibold ">
-        Peringkat: {getRank(totalPoints)}
+      <h2 className="text-xl font-bold text-center">Total Poin & Peringkat</h2>
+      <p className="text-center text-4xl font-bold">
+        {totalPoints} | {getRank(totalPoints)}
       </p>
     </>
   );
