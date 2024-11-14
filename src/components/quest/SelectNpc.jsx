@@ -5,21 +5,31 @@ import { generateQuest } from "../../services/gemini/geminiApiServices";
 import { useShallow } from "zustand/react/shallow";
 
 export default function SelectNpc({ setTheme }) {
-  const { quest, npcData, selectedNpc, setSelectedNpc, addQuests } =
-    useQuestStore(
-      useShallow((state) => ({
-        quest: state.quests,
-        setSelectedNpc: state.setSelectedNpc,
-        npcData: state.npcData,
-        selectedNpc: state.selectedNpc,
-        addQuests: state.addQuests,
-      })),
-    );
+  const {
+    quest,
+    npcData,
+    selectedNpc,
+    setSelectedNpc,
+    addQuests,
+    error,
+    setError,
+  } = useQuestStore(
+    useShallow((state) => ({
+      quest: state.quests,
+      setSelectedNpc: state.setSelectedNpc,
+      npcData: state.npcData,
+      selectedNpc: state.selectedNpc,
+      addQuests: state.addQuests,
+      error: state.error,
+      setError: state.setError,
+    })),
+  );
 
   const [loading, setLoading] = useState(false);
 
   const generateQuestHandler = async () => {
     if (!selectedNpc) return;
+    setError(null);
 
     setLoading(true);
     try {
@@ -30,9 +40,7 @@ export default function SelectNpc({ setTheme }) {
       addQuests(questsWithId);
     } catch (err) {
       console.error(err);
-      useQuestStore
-        .getState()
-        .setError("Gagal mencari quest. Silakan coba lagi.");
+      setError("Gagal mencari quest. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
@@ -102,6 +110,11 @@ export default function SelectNpc({ setTheme }) {
               {loading ? "Mencari Quest..." : "Cari Quest"}
             </button>
           </div>
+        </div>
+      )}
+      {error && (
+        <div className="alert alert-error mt-4">
+          <div>{error}</div>
         </div>
       )}
     </div>
