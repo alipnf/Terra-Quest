@@ -11,6 +11,8 @@ const npcStore = (set) => ({
     set((state) => ({
       selectedNpc: state.npcData.find((npc) => npc.name === npcName) || null,
     })),
+
+  resetAll: () => set({ user: null, loading: true, error: null }), // Reset semua state
 });
 
 export const useNpcStore = create(persist(npcStore, { name: "npc-store" }));

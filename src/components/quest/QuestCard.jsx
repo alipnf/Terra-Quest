@@ -21,7 +21,7 @@ export default function QuestCard({ questItem }) {
 
   const { quest } = questItem;
   const isTaken = takenQuests.includes(questItem.id);
-  const isInProgress = questItem.status === "Sedang dikerjakan"; // Cek status
+  const isInProgress = questItem.status === "Sedang dikerjakan";
 
   return (
     <div
@@ -62,7 +62,7 @@ export default function QuestCard({ questItem }) {
           >
             Tanya NPC
           </Link>
-          {isTaken && (
+          {isInProgress && (
             <button
               className="btn btn-success"
               onClick={() => onCompleteQuest(questItem.id)}

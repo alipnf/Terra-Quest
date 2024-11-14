@@ -13,6 +13,8 @@ import {
 } from "firebase/auth";
 
 import { app } from "../services/firebase/firebaseConfig";
+import { useQuestStore } from "./useQuestStore";
+import { useNpcStore } from "./useNpcStore";
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
@@ -74,10 +76,20 @@ const userStore = (set) => ({
     }
   },
 
+  resetAll: () => set({ npcData: [], selectedNpc: null }),
+
   logout: async () => {
     try {
       await signOut(auth);
-      set({ user: null });
+      localStorage.removeItem("user-store"); // Hapus data dari localStorage
+      localStorage.removeItem("npc-store"); // Hapus data dari store lain
+      localStorage.removeItem("quest-store");
+
+      useUserStore.getState().resetAll();
+      useQuestStore.getState().resetAll();
+      useNpcStore.getState().resetAll();
+
+      set({ user: null, loading: false, error: null });
     } catch (error) {
       set({ error: error.message });
     }
@@ -93,7 +105,7 @@ const userStore = (set) => ({
 
 export const useUserStore = create(
   persist(userStore, {
-    name: "user-storage",
+    name: "user-store",
   }),
 );
 
