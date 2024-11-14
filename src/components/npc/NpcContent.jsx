@@ -1,8 +1,8 @@
 import NpcInfo from "./NpcInfo";
 import QuestItem from "./QuestItem";
 import React, { useEffect, useState } from "react";
+import { fetchNpcDataFromFirestore } from "../../services/firebase/npcDataServices";
 import { useNpcStore } from "../../stores/useNpcStore";
-import { useFetch } from "../../hooks/useFetch";
 import { useShallow } from "zustand/react/shallow";
 
 export default function NpcContent() {
@@ -15,18 +15,23 @@ export default function NpcContent() {
     })),
   );
 
-  const [isDataFetched, setIsDataFetched] = useState(false);
-
-  const { data, loading, error } = useFetch(
-    !isDataFetched ? "https://672b14f7976a834dd0258331.mockapi.io/npc" : null,
-  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (data) {
-      setNpcData(data);
-      setIsDataFetched(true);
-    }
-  }, [data, setNpcData]);
+    const fetchData = async () => {
+      try {
+        const data = await fetchNpcDataFromFirestore();
+        setNpcData(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [setNpcData]);
 
   useEffect(() => {
     if (!selectedNpc && npcData.length > 0) {
@@ -34,7 +39,7 @@ export default function NpcContent() {
     }
   }, [npcData, selectedNpc, selectNpc]);
 
-  if (npcData.length === 0 && loading) {
+  if (npcData === 0 && loading) {
     return <div className="min-h-screen">Loading NPC data...</div>;
   }
 
