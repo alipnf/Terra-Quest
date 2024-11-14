@@ -1,34 +1,54 @@
 import SelectNpc from "./SelectNpc";
 import QuestList from "./QuestList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuestStore } from "../../stores/useQuestStore";
-import { useFetch } from "../../hooks/useFetch";
-import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { fetchNpcDataFromFirestore } from "../../services/firebase/npcDataServices";
+import { getOngoingQuests } from "../../services/firebase/questServices";
+import { useUserStore } from "../../stores/useUserstore";
 
 export default function QuestContent({ setTheme }) {
-  const { quests, setNpcData, npcData } = useQuestStore(
+  const { quests, setNpcData, addQuests } = useQuestStore(
     useShallow((state) => ({
       setNpcData: state.setNpcData,
-      npcData: state.npcData,
       quests: state.quests,
+      addQuests: state.addQuests,
     })),
   );
-  const [isDataFetched, setIsDataFetched] = useState(false);
-  const { data, loading, error } = useFetch(
-    !isDataFetched ? "https://672b14f7976a834dd0258331.mockapi.io/npc" : null,
-  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { user } = useUserStore();
 
   useEffect(() => {
-    if (data) {
-      setNpcData(data);
-      setIsDataFetched(true);
-    }
-  }, [data, setNpcData]);
+    const fetchData = async () => {
+      try {
+        const npcData = await fetchNpcDataFromFirestore();
+        setNpcData(npcData);
 
-  if (npcData.length === 0 && loading) {
+        if (user) {
+          const ongoingQuests = await getOngoingQuests(user.uid);
+          if (ongoingQuests.length > 0) {
+            addQuests(ongoingQuests);
+          }
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [setNpcData, addQuests, user]);
+
+  if (loading) {
     return <div className="min-h-screen">Loading NPC data...</div>;
   }
+
+  if (error) {
+    return <div>Error loading NPC data: {error.message}</div>;
+  }
+
   return (
     <div className="container mx-auto mb-8 mt-3 min-h-screen px-4">
       <SelectNpc setTheme={setTheme} />
