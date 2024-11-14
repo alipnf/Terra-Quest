@@ -5,6 +5,7 @@ import AchievementItem from "./AchievementItem";
 import { getCompletedQuests } from "../../services/firebase/questServices"; // Pastikan path ini sesuai
 import { useUserStore } from "../../stores/useUserstore";
 import CompletedQuestItem from "./CompletedQuestItem";
+import SkeletonAchievement from "./skeletonAchievement";
 
 export default function CompletedMissions() {
   const [completedMissions, setCompletedMissions] = useState([]);
@@ -51,7 +52,7 @@ export default function CompletedMissions() {
   }, [completedMissions]);
 
   if (loading) {
-    return <p className="text-center">Loading...</p>;
+    return <SkeletonAchievement />;
   }
 
   return (

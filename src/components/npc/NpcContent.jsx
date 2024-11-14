@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { fetchNpcDataFromFirestore } from "../../services/firebase/npcDataServices";
 import { useNpcStore } from "../../stores/useNpcStore";
 import { useShallow } from "zustand/react/shallow";
+import SkeletonNpc from "./skeletonNpc";
 
 export default function NpcContent() {
   const { npcData, selectedNpc, setNpcData, selectNpc } = useNpcStore(
@@ -40,7 +41,7 @@ export default function NpcContent() {
   }, [npcData, selectedNpc, selectNpc]);
 
   if (npcData === 0 && loading) {
-    return <div className="min-h-screen">Loading NPC data...</div>;
+    return <SkeletonNpc />;
   }
 
   if (error) {

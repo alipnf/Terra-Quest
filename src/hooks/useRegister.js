@@ -10,6 +10,8 @@ export function useRegister() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isLoadingStandard, setIsLoadingStandard] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,6 +20,8 @@ export function useRegister() {
       setError("Password harus minimal 8 karakter.");
       return;
     }
+
+    setIsLoadingStandard(true);
     await register(email, password, name, (status, errorMessage) => {
       if (status === true) {
         setShowSuccessModal(true);
@@ -25,11 +29,13 @@ export function useRegister() {
         console.error(errorMessage);
         setShowSuccessModal(false);
       }
+      setIsLoadingStandard(false);
     });
   };
 
   const handleGoogleRegister = async () => {
     const provider = new GoogleAuthProvider();
+    setIsLoadingGoogle(true);
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
@@ -37,6 +43,8 @@ export function useRegister() {
     } catch (error) {
       console.error("Error registering with Google:", error);
       setError("Pendaftaran dengan Google gagal. Silakan coba lagi.");
+    } finally {
+      setIsLoadingGoogle(false);
     }
   };
 
@@ -65,6 +73,8 @@ export function useRegister() {
     handleGoogleRegister,
     showSuccessModal,
     closeSuccessModal,
+    isLoadingStandard,
+    isLoadingGoogle,
     error,
   };
 }
