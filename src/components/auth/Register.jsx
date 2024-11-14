@@ -13,10 +13,13 @@ export default function Register() {
     handleGoogleRegister,
     showSuccessModal,
     closeSuccessModal,
+    isLoadingStandard,
+    isLoadingGoogle,
     error,
   } = useRegister();
 
   const navigate = useNavigate();
+
   return (
     <div className="md:min-h-screen p-5 flex items-center justify-center">
       <div className="card xl:w-5/12 bg-base-100 shadow-2xl">
@@ -68,8 +71,16 @@ export default function Register() {
                 />
               </div>
             </div>
-            <button type="submit" className="btn btn-primary w-full mt-4">
-              Daftar
+            <button
+              type="submit"
+              className="btn btn-primary w-full mt-4"
+              disabled={isLoadingStandard || isLoadingGoogle}
+            >
+              {isLoadingStandard ? (
+                <span className="loading loading-spinner loading-md"></span>
+              ) : (
+                "Daftar"
+              )}
             </button>
           </form>
 
@@ -79,8 +90,13 @@ export default function Register() {
             <button
               onClick={handleGoogleRegister}
               className="btn btn-outline w-full"
+              disabled={isLoadingStandard || isLoadingGoogle}
             >
-              Daftar dengan Google
+              {isLoadingGoogle ? (
+                <span className="loading loading-spinner loading-md"></span>
+              ) : (
+                "Daftar dengan Google"
+              )}
             </button>
           </div>
 

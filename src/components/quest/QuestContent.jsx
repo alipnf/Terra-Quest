@@ -6,6 +6,7 @@ import { useShallow } from "zustand/react/shallow";
 import { fetchNpcDataFromFirestore } from "../../services/firebase/npcDataServices";
 import { getOngoingQuests } from "../../services/firebase/questServices";
 import { useUserStore } from "../../stores/useUserstore";
+import SkeletonQuest from "./skeletonQuest";
 
 export default function QuestContent({ setTheme }) {
   const { quests, setNpcData, addQuests } = useQuestStore(
@@ -42,7 +43,7 @@ export default function QuestContent({ setTheme }) {
   }, [setNpcData, addQuests, user]);
 
   if (loading) {
-    return <div className="min-h-screen">Loading NPC data...</div>;
+    return <SkeletonQuest />;
   }
 
   if (error) {

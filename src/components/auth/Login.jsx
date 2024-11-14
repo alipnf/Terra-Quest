@@ -10,6 +10,8 @@ export default function Login() {
     handleSubmit,
     handleGoogleLogin,
     error,
+    isLoadingStandard,
+    isLoadingGoogle,
   } = useLogin();
 
   const navigate = useNavigate();
@@ -51,8 +53,16 @@ export default function Login() {
                 />
               </div>
             </div>
-            <button type="submit" className="btn btn-primary w-full mt-4">
-              Masuk
+            <button
+              type="submit"
+              className="btn btn-primary w-full mt-4"
+              disabled={isLoadingStandard || isLoadingGoogle}
+            >
+              {isLoadingStandard ? (
+                <span className="loading loading-spinner loading-md"></span>
+              ) : (
+                "Masuk"
+              )}
             </button>
           </form>
 
@@ -62,8 +72,13 @@ export default function Login() {
             <button
               onClick={handleGoogleLogin}
               className="btn btn-outline w-full"
+              disabled={isLoadingStandard || isLoadingGoogle}
             >
-              Login dengan Google
+              {isLoadingGoogle ? (
+                <span className="loading loading-spinner loading-md"></span>
+              ) : (
+                "Login dengan Google"
+              )}
             </button>
           </div>
 

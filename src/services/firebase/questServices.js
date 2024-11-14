@@ -95,7 +95,6 @@ export const getCompletedQuests = async (uid) => {
         (quest) => quest.status === "Selesai",
       );
 
-      console.log(completedQuests); // Tambahkan log ini
       return completedQuests;
     } else {
       return [];

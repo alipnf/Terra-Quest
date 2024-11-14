@@ -5,21 +5,31 @@ import { generateQuest } from "../../services/gemini/geminiApiServices";
 import { useShallow } from "zustand/react/shallow";
 
 export default function SelectNpc({ setTheme }) {
-  const { quest, npcData, selectedNpc, setSelectedNpc, addQuests } =
-    useQuestStore(
-      useShallow((state) => ({
-        quest: state.quests,
-        setSelectedNpc: state.setSelectedNpc,
-        npcData: state.npcData,
-        selectedNpc: state.selectedNpc,
-        addQuests: state.addQuests,
-      })),
-    );
+  const {
+    quest,
+    npcData,
+    selectedNpc,
+    setSelectedNpc,
+    addQuests,
+    error,
+    setError,
+  } = useQuestStore(
+    useShallow((state) => ({
+      quest: state.quests,
+      setSelectedNpc: state.setSelectedNpc,
+      npcData: state.npcData,
+      selectedNpc: state.selectedNpc,
+      addQuests: state.addQuests,
+      error: state.error,
+      setError: state.setError,
+    })),
+  );
 
   const [loading, setLoading] = useState(false);
 
   const generateQuestHandler = async () => {
     if (!selectedNpc) return;
+    setError(null);
 
     setLoading(true);
     try {
@@ -30,9 +40,7 @@ export default function SelectNpc({ setTheme }) {
       addQuests(questsWithId);
     } catch (err) {
       console.error(err);
-      useQuestStore
-        .getState()
-        .setError("Gagal mencari quest. Silakan coba lagi.");
+      setError("Gagal mencari quest. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
@@ -88,20 +96,38 @@ export default function SelectNpc({ setTheme }) {
           <div className="card-body">
             <p>{getNPCWelcomeMessage(selectedNpc)}</p>
           </div>
-          <div className="card-footer flex justify-between mt-4">
-            <button className="btn btn-outline" onClick={resetNPCSelection}>
+          <div className="card-footer flex flex-wrap justify-between mt-4 gap-2">
+            <button
+              className="btn btn-outline w-full sm:w-auto"
+              onClick={resetNPCSelection}
+              disabled={loading}
+            >
               <RefreshCw className="w-4 h-4 mr-2" />
               Pilih NPC Lain
             </button>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary w-full sm:w-auto"
               onClick={generateQuestHandler}
               disabled={loading || !selectedNpc}
             >
-              <Search className="w-4 h-4 mr-2" />
-              {loading ? "Mencari Quest..." : "Cari Quest"}
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner"></span>
+                  Mencari Quest...
+                </>
+              ) : (
+                <>
+                  <Search className="w-4 h-4 mr-2" />
+                  Cari Quest
+                </>
+              )}
             </button>
           </div>
+        </div>
+      )}
+      {error && (
+        <div className="alert alert-error mt-4">
+          <div>{error}</div>
         </div>
       )}
     </div>
