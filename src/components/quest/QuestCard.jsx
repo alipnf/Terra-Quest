@@ -57,9 +57,9 @@ export default function QuestCard({ questItem }) {
             </span>
           </div>
         )}
-        <div className="card-actions mt-3 justify-between">
+        <div className="card-actions mt-3 justify-between flex-wrap gap-2">
           <button
-            className={`btn ${!isInProgress ? "btn-secondary" : "btn-primary"}`}
+            className={`btn w-full sm:w-auto ${!isInProgress ? "btn-secondary" : "btn-primary"}`}
             onClick={() => onTakeQuest(questItem.id)}
             disabled={isInProgress}
           >
@@ -67,14 +67,14 @@ export default function QuestCard({ questItem }) {
           </button>
           <Link
             to={`/quest/${questItem.id}`}
-            className="btn btn-outline"
+            className="btn btn-outline w-full sm:w-auto"
             onClick={() => setQuestById(questItem)}
           >
             Tanya NPC
           </Link>
           {isInProgress && (
             <button
-              className="btn btn-success"
+              className="btn btn-success w-full sm:w-auto"
               onClick={() => onCompleteQuest(questItem.id)}
             >
               Quest Selesai
