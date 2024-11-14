@@ -80,3 +80,28 @@ export const getOngoingQuests = async (uid) => {
     return [];
   }
 };
+
+export const getCompletedQuests = async (uid) => {
+  try {
+    const userRef = doc(db, "users", uid);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      const quests = userData.quests || {};
+
+      // Filter quests yang statusnya "Selesai"
+      const completedQuests = Object.values(quests).filter(
+        (quest) => quest.status === "Selesai",
+      );
+
+      console.log(completedQuests); // Tambahkan log ini
+      return completedQuests;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error mengambil quest yang selesai:", error);
+    return [];
+  }
+};
