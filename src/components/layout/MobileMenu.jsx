@@ -18,7 +18,7 @@ export default function MobileMenu({
 }) {
   return (
     <div className="relative md:hidden">
-      <button onClick={toggleMenu} className="btn btn-ghost">
+      <button onClick={toggleMenu} className="btn btn-ghost" aria-label="menu">
         <Menu className="h-6 w-6 text-neutral-content" />
       </button>
 
