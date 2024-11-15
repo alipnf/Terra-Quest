@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Leaf, Zap, RefreshCw, Search } from "lucide-react";
 import { useQuestStore } from "../../stores/useQuestStore";
 import { generateQuest } from "../../services/gemini/geminiApiServices";
@@ -13,6 +13,8 @@ export default function SelectNpc({ setTheme }) {
     addQuests,
     error,
     setError,
+    loading,
+    setLoading,
   } = useQuestStore(
     useShallow((state) => ({
       quest: state.quests,
@@ -22,10 +24,10 @@ export default function SelectNpc({ setTheme }) {
       addQuests: state.addQuests,
       error: state.error,
       setError: state.setError,
+      loading: state.loading,
+      setLoading: state.setLoading,
     })),
   );
-
-  const [loading, setLoading] = useState(false);
 
   const generateQuestHandler = async () => {
     if (!selectedNpc) return;
@@ -45,6 +47,10 @@ export default function SelectNpc({ setTheme }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setError(null);
+  }, [setError]);
 
   useEffect(() => {
     const npcTheme = npcData.find((npc) => npc.name === selectedNpc)?.theme;

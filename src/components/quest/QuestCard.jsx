@@ -10,6 +10,7 @@ export default function QuestCard({ questItem }) {
     onCompleteQuest,
     setQuestById,
     takenQuests,
+    loading,
   } = useQuestStore(
     useShallow((state) => ({
       onDeleteQuest: state.onDeleteQuest,
@@ -17,6 +18,7 @@ export default function QuestCard({ questItem }) {
       onCompleteQuest: state.onCompleteQuest,
       setQuestById: state.setQuestById,
       takenQuests: state.takenQuests,
+      loading: state.loading,
     })),
   );
 
@@ -35,6 +37,7 @@ export default function QuestCard({ questItem }) {
           <button
             className="btn btn-ghost btn-sm"
             onClick={() => onDeleteQuest(questItem.id)}
+            disabled={loading || isInProgress}
           >
             ✕
           </button>
@@ -61,7 +64,7 @@ export default function QuestCard({ questItem }) {
           <button
             className={`btn w-full sm:w-auto ${!isInProgress ? "btn-secondary" : "btn-primary"}`}
             onClick={() => onTakeQuest(questItem.id)}
-            disabled={isInProgress}
+            disabled={loading || isInProgress}
           >
             {isTaken ? "Quest Diambil" : "Ambil Quest"}
           </button>
@@ -69,6 +72,7 @@ export default function QuestCard({ questItem }) {
             to={`/quest/${questItem.id}`}
             className="btn btn-outline w-full sm:w-auto"
             onClick={() => setQuestById(questItem)}
+            disabled={loading || isInProgress}
           >
             Tanya NPC
           </Link>
@@ -76,6 +80,7 @@ export default function QuestCard({ questItem }) {
             <button
               className="btn btn-success w-full sm:w-auto"
               onClick={() => onCompleteQuest(questItem.id)}
+              disabled={loading || isInProgress}
             >
               Quest Selesai
             </button>
