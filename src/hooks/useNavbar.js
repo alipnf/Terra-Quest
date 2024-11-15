@@ -1,12 +1,19 @@
-import { useState, useEffect } from "react";
-import { useUserStore } from "../stores/useUserstore";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useUserStore } from "../stores/useUserStore";
 
 export default function useNavbar() {
   const { user, logout } = useUserStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  // useRef untuk melacak isMenuOpen tanpa mempengaruhi render ulang
+  const isMenuOpenRef = useRef(isMenuOpen);
+
+  useEffect(() => {
+    isMenuOpenRef.current = isMenuOpen;
+  }, [isMenuOpen]);
+
+  const toggleMenu = () => setIsMenuOpen((value) => !value);
   const openLogoutModal = () => setIsModalOpen(true);
   const closeLogoutModal = () => setIsModalOpen(false);
 
@@ -15,21 +22,23 @@ export default function useNavbar() {
     closeLogoutModal();
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".navbar")) setIsMenuOpen(false);
-    };
-
-    if (isMenuOpen) {
-      document.addEventListener("click", handleClickOutside);
-    } else {
-      document.removeEventListener("click", handleClickOutside);
+  //useCallback untuk menghindari pembuatan fungsi baru setiap render
+  const handleClickOutside = useCallback((event) => {
+    // Jika user mengklik di luar navbar dan menu terbuka, maka tutup menu
+    if (!event.target.closest(".navbar") && isMenuOpenRef.current) {
+      setIsMenuOpen(false);
     }
+  }, []);
+
+  useEffect(() => {
+    isMenuOpen
+      ? document.addEventListener("click", handleClickOutside)
+      : document.removeEventListener("click", handleClickOutside);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isMenuOpen]);
+  }, [handleClickOutside, isMenuOpen]);
 
   return {
     user,

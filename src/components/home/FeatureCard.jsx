@@ -1,4 +1,5 @@
 export default function FeatureCard({ icon: Icon, title, description }) {
+  //alias Icon biar bisa di render sebagai component
   return (
     <div className="card bg-neutral shadow-lg">
       <div className="card-body text-center">

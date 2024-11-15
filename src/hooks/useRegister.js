@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../stores/useUserstore";
+import { useUserStore } from "../stores/useUserStore";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../services/firebase/firebaseConfig";
 

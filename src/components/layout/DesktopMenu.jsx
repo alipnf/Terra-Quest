@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Home,
   ScrollText,
@@ -8,6 +7,7 @@ import {
   User,
   LogIn,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import IconLink from "./IconLink";
 
 export default function DesktopMenu({ user, openLogoutModal }) {
@@ -15,7 +15,7 @@ export default function DesktopMenu({ user, openLogoutModal }) {
     <div className="hidden md:flex gap-3">
       <IconLink to="/" icon={Home} label="Beranda" />
 
-      {/* Menambahkan pengecekan user */}
+      {/* cek user */}
       {user && (
         <>
           <IconLink to="/quest" icon={ScrollText} label="Quest" />

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import AchievementsCard from "./AchievementsCard";
 import TotalPoints from "./TotalPoints";
 import AchievementItem from "./AchievementItem";
-import { getCompletedQuests } from "../../services/firebase/questServices"; // Pastikan path ini sesuai
-import { useUserStore } from "../../stores/useUserstore";
+import { getCompletedQuests } from "../../services/firebase/questServices";
+import { useUserStore } from "../../stores/useUserStore";
 import CompletedQuestItem from "./CompletedQuestItem";
 import SkeletonAchievement from "./skeletonAchievement";
 
