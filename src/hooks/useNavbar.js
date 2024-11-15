@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useUserStore } from "../stores/useUserstore";
+import { useUserStore } from "../stores/useUserStore";
 
 export default function useNavbar() {
   const { user, logout } = useUserStore();

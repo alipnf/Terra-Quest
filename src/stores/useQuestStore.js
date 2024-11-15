@@ -6,7 +6,7 @@ import {
   deleteQuestFromUser,
   getOngoingQuests,
 } from "../services/firebase/questServices";
-import { useUserStore } from "./useUserstore";
+import { useUserStore } from "./useUserStore";
 
 const questStore = (set) => ({
   quests: [],

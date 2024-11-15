@@ -5,7 +5,7 @@ import { useQuestStore } from "../../stores/useQuestStore";
 import { useShallow } from "zustand/react/shallow";
 import { fetchNpcDataFromFirestore } from "../../services/firebase/npcDataServices";
 import { getOngoingQuests } from "../../services/firebase/questServices";
-import { useUserStore } from "../../stores/useUserstore";
+import { useUserStore } from "../../stores/useUserStore";
 import SkeletonQuest from "./skeletonQuest";
 
 export default function QuestContent({ setTheme }) {
