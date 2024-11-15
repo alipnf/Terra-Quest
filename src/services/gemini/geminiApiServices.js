@@ -102,3 +102,19 @@ export const initializeChat = (npcData, selectedQuest, selectedNpc) => {
     ],
   });
 };
+
+export const getNPCWelcomeMessage = async (npcName, npcData) => {
+  const prompt = `
+    Anda adalah NPC bernama ${npcName} dengan karakteristik: ${JSON.stringify(npcData)}.
+    Berikan pesan yang menyambut pemain dan mengarahkan mereka untuk mengklik tombol "Cari Quest" untuk memulai petualangan.
+  `;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const message = result.response.text().trim();
+    return message;
+  } catch (error) {
+    console.error("Error generating NPC welcome message:", error);
+    return `Selamat datang, saya ${npcName}! Klik tombol "Cari Quest" untuk memulai petualangan!`;
+  }
+};

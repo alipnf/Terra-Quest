@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Leaf, Zap, RefreshCw, Search } from "lucide-react";
 import { useQuestStore } from "../../stores/useQuestStore";
-import { generateQuest } from "../../services/gemini/geminiApiServices";
+import {
+  generateQuest,
+  getNPCWelcomeMessage,
+} from "../../services/gemini/geminiApiServices";
 import { useShallow } from "zustand/react/shallow";
 
 export default function SelectNpc({ setTheme }) {
@@ -28,6 +31,9 @@ export default function SelectNpc({ setTheme }) {
       setLoading: state.setLoading,
     })),
   );
+
+  const [welcomeMessage, setWelcomeMessage] = useState("");
+  const [welcomeLoading, setWelcomeLoading] = useState(false);
 
   const generateQuestHandler = async () => {
     if (!selectedNpc) return;
@@ -59,6 +65,27 @@ export default function SelectNpc({ setTheme }) {
     }
   }, [npcData, selectedNpc, setTheme]);
 
+  useEffect(() => {
+    const loadWelcomeMessage = async () => {
+      if (selectedNpc) {
+        setWelcomeLoading(true); // Set the welcome message loading state to true
+        try {
+          const message = await getNPCWelcomeMessage(selectedNpc);
+          setWelcomeMessage(message);
+        } catch (error) {
+          console.error("Error generating NPC welcome message:", error);
+          setWelcomeMessage(
+            "Selamat datang! Klik tombol 'Cari Quest' untuk memulai.",
+          );
+        } finally {
+          setWelcomeLoading(false); // Set it back to false when finished
+        }
+      }
+    };
+
+    loadWelcomeMessage();
+  }, [selectedNpc, setLoading]);
+
   const handleNPCSelection = (npcName) => {
     setSelectedNpc(npcName);
   };
@@ -71,21 +98,30 @@ export default function SelectNpc({ setTheme }) {
     <div className="text-center mb-8">
       {!selectedNpc ? (
         <>
-          <p className="text-xl mb-4">Pilih NPC yang akan membimbingmu:</p>
-          <div className="flex justify-center gap-4">
-            {npcData.map((npc) => (
-              <button
+          <p className="text-xl mb-8">Pilih NPC yang akan menjadi guide-mu</p>
+          <div className="flex justify-evenly flex-col md:flex-row gap-7 md:gap-[5%] px-4">
+            {npcData.slice(0, 2).map((npc) => (
+              <div
                 key={npc.id}
                 onClick={() => handleNPCSelection(npc.name)}
-                className="btn btn-primary flex items-center gap-2"
+                className="card bg-base-100 shadow-xl cursor-pointer flex-1 w-full hover:scale-105 transition-transform duration-300"
               >
-                {npc.name === "Greenia" ? (
-                  <Leaf className="w-5 h-5" />
-                ) : (
-                  <Zap className="w-5 h-5" />
-                )}
-                {npc.name}
-              </button>
+                <figure className="overflow-hidden">
+                  <img
+                    src={npc.image}
+                    alt={npc.name}
+                    className="object-cover w-full h-48 md:h-80"
+                  />
+                </figure>
+                <div className="card-body text-center p-4">
+                  <h2 className="card-title">{npc.name}</h2>
+                  <p className="text-sm">
+                    {npc.name === "Greenia"
+                      ? "Dapatkan petualangan bersama Greenia!"
+                      : "Tantangan menanti bersama Okta!"}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </>
@@ -100,7 +136,22 @@ export default function SelectNpc({ setTheme }) {
             <h3 className="text-lg font-semibold">{selectedNpc}</h3>
           </div>
           <div className="card-body">
-            <p>{getNPCWelcomeMessage(selectedNpc)}</p>
+            <div className="mt-4 flex gap-4">
+              <div className="w-1/3">
+                <img
+                  src={npcData.find((npc) => npc.name === selectedNpc)?.image}
+                  alt={selectedNpc}
+                  className="object-cover w-full h-48 md:h-64 rounded-lg shadow-xl"
+                />
+              </div>
+              <div className="w-2/3 flex items-center justify-center">
+                {welcomeLoading ? ( // Use welcomeLoading here for the welcome message
+                  <span className="loading loading-dots loading-md"></span>
+                ) : (
+                  <p>{welcomeMessage}</p>
+                )}
+              </div>
+            </div>
           </div>
           <div className="card-footer flex flex-wrap justify-between mt-4 gap-2">
             <button
@@ -138,10 +189,4 @@ export default function SelectNpc({ setTheme }) {
       )}
     </div>
   );
-}
-
-function getNPCWelcomeMessage(npcName) {
-  return npcName === "Greenia"
-    ? "Selamat datang, petualang! Saya Greenia, akan membimbingmu dalam petualangan ini."
-    : "Hey, saya Okta! Bersiaplah untuk tantangan yang mendebarkan!";
 }
