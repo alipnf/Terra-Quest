@@ -4,26 +4,19 @@ import { Link } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
 
 export default function QuestCard({ questItem }) {
-  const {
-    onDeleteQuest,
-    onTakeQuest,
-    onCompleteQuest,
-    setQuestById,
-    takenQuests,
-    loading,
-  } = useQuestStore(
-    useShallow((state) => ({
-      onDeleteQuest: state.onDeleteQuest,
-      onTakeQuest: state.onTakeQuest,
-      onCompleteQuest: state.onCompleteQuest,
-      setQuestById: state.setQuestById,
-      takenQuests: state.takenQuests,
-      loading: state.loading,
-    })),
-  );
+  const { onDeleteQuest, onTakeQuest, onCompleteQuest, setQuestById, loading } =
+    useQuestStore(
+      useShallow((state) => ({
+        onDeleteQuest: state.onDeleteQuest,
+        onTakeQuest: state.onTakeQuest,
+        onCompleteQuest: state.onCompleteQuest,
+        setQuestById: state.setQuestById,
+        takenQuests: state.takenQuests,
+        loading: state.loading,
+      })),
+    );
 
   const { quest } = questItem;
-  const isTaken = takenQuests.includes(questItem.id);
   const isInProgress = questItem.status === "Sedang dikerjakan";
 
   return (
@@ -37,7 +30,7 @@ export default function QuestCard({ questItem }) {
           <button
             className="btn btn-ghost btn-sm"
             onClick={() => onDeleteQuest(questItem.id)}
-            disabled={loading || isInProgress}
+            disabled={loading}
           >
             ✕
           </button>
@@ -66,13 +59,13 @@ export default function QuestCard({ questItem }) {
             onClick={() => onTakeQuest(questItem.id)}
             disabled={loading || isInProgress}
           >
-            {isTaken ? "Quest Diambil" : "Ambil Quest"}
+            {isInProgress ? "Quest Diambil" : "Ambil Quest"}
           </button>
           <Link
             to={`/quest/${questItem.id}`}
             className="btn btn-outline w-full sm:w-auto"
             onClick={() => setQuestById(questItem)}
-            disabled={loading || isInProgress}
+            disabled={loading}
           >
             Tanya NPC
           </Link>
@@ -80,7 +73,7 @@ export default function QuestCard({ questItem }) {
             <button
               className="btn btn-success w-full sm:w-auto"
               onClick={() => onCompleteQuest(questItem.id)}
-              disabled={loading || isInProgress}
+              disabled={loading}
             >
               Quest Selesai
             </button>
