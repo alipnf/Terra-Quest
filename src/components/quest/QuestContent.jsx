@@ -56,6 +56,7 @@ export default function QuestContent({ setTheme }) {
 
       {error && <p className="mt-4 text-red-500">{error}</p>}
 
+      <div className="mt-10 mb-10 divider">Quests</div>
       {quests && quests.length > 0 && <QuestList />}
     </div>
   );
