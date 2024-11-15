@@ -15,7 +15,9 @@ const questStore = (set) => ({
   selectedNpc: null,
   error: null,
   selectedQuest: [],
+  loading: false,
 
+  setLoading: (isLoading) => set({ loading: isLoading }),
   setError: (message) => set({ error: message }),
 
   setNpcData: (data) => set({ npcData: data }),
