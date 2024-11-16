@@ -1,9 +1,9 @@
 import {
-  doc,
-  setDoc,
-  updateDoc,
-  getDoc,
-  deleteField,
+  doc, // fungsi untuk membuat referensi dokumen
+  setDoc, //fungsi untuk membuat atau mengganti dokumen
+  updateDoc, //fungsi untuk memperbarui dokumen
+  getDoc, //fungsi untuk mengambil dokumen
+  deleteField, //fungsi untuk menghapus field di dokumen
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
@@ -25,7 +25,6 @@ export const addQuestToUser = async (uid, questItem) => {
         [`quests.${questItem.id}`]: questItem,
       });
     }
-    console.log("Quest berhasil disimpan ke Firebase.");
   } catch (error) {
     console.error("Error updating user quests:", error);
   }
@@ -37,9 +36,6 @@ export const completeQuestInUser = async (uid, questId) => {
     await updateDoc(userRef, {
       [`quests.${questId}.status`]: "Selesai",
     });
-    console.log(
-      "Status misi berhasil diperbarui menjadi 'Selesai' di Firebase.",
-    );
   } catch (error) {
     console.error("Error updating quest status to 'Selesai':", error);
   }
@@ -51,7 +47,6 @@ export const deleteQuestFromUser = async (uid, questId) => {
     await updateDoc(userRef, {
       [`quests.${questId}`]: deleteField(),
     });
-    console.log("Misi berhasil dihapus dari Firebase.");
   } catch (error) {
     console.error("Error deleting quest from Firebase:", error);
   }
@@ -89,7 +84,6 @@ export const getCompletedQuests = async (uid) => {
     if (userDoc.exists()) {
       const userData = userDoc.data();
       const quests = userData.quests || {};
-
       // Filter quests yang statusnya "Selesai"
       const completedQuests = Object.values(quests).filter(
         (quest) => quest.status === "Selesai",

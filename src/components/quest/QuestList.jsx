@@ -16,7 +16,7 @@ export default function QuestList() {
         .sort((a, b) => {
           const isATaken = takenQuests.includes(a.id) ? 1 : 0;
           const isBTaken = takenQuests.includes(b.id) ? 1 : 0;
-          return isBTaken - isATaken;
+          return isBTaken - isATaken; //mengurutkan dari yang terbesar
         })
         .map((questItem) => (
           <QuestCard key={questItem.id} questItem={questItem} />

@@ -1,8 +1,8 @@
 import { auth } from "./firebaseConfig";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
+  createUserWithEmailAndPassword, //fungsi untuk membuat user baru
+  signInWithEmailAndPassword, // fungsi untuk login user
+  signOut, //fungsi untuk logout user
 } from "firebase/auth";
 
 export const registerUser = (email, password) => {

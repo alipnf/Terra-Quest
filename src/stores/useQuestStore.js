@@ -9,6 +9,7 @@ import {
 import { useUserStore } from "./useUserStore";
 
 const questStore = (set) => ({
+  // State
   quests: [],
   takenQuests: [],
   npcData: [],
@@ -17,27 +18,23 @@ const questStore = (set) => ({
   selectedQuest: [],
   loading: false,
 
+  // action
   setLoading: (isLoading) => set({ loading: isLoading }),
   setError: (message) => set({ error: message }),
-
   setNpcData: (data) => set({ npcData: data }),
-
-  handleNpcChange: (npcName) => {
-    set({ selectedNpc: npcName });
-  },
-
   setSelectedNpc: (npcName) => set({ selectedNpc: npcName }),
+  setQuestById: (quest) => set({ selectedQuest: quest }),
+  handleNpcChange: (npcName) => set({ selectedNpc: npcName }),
 
+  // Quest management
   addQuests: (newQuests) =>
     set((state) => {
       const existingQuests = state.quests.filter(
         (quest) => quest.status === "Sedang dikerjakan",
       );
-
       const uniqueNewQuests = newQuests.filter(
         (newQuest) => !existingQuests.some((quest) => quest.id === newQuest.id),
       );
-
       const updatedQuests = [...existingQuests, ...uniqueNewQuests];
       return { quests: updatedQuests };
     }),
@@ -45,11 +42,9 @@ const questStore = (set) => ({
   onDeleteQuest: (questId) => {
     const { user } = useUserStore.getState();
     const uid = user?.uid;
-
     if (uid) {
       deleteQuestFromUser(uid, questId);
     }
-
     set((state) => ({
       quests: state.quests.filter((quest) => quest.id !== questId),
     }));
@@ -99,7 +94,6 @@ const questStore = (set) => ({
     }
   },
 
-  setQuestById: (quest) => set({ selectedQuest: quest }),
   resetAll: () =>
     set({
       quests: [],
@@ -108,8 +102,9 @@ const questStore = (set) => ({
       selectedNpc: null,
       error: null,
       selectedQuest: [],
-    }), // Reset semua state
+    }),
 
+  // Load quests from Firebase
   loadQuestsFromFirebase: async () => {
     const { user } = useUserStore.getState();
     const uid = user?.uid;

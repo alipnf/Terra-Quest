@@ -2,9 +2,11 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 const npcStore = (set) => ({
+  //state
   npcData: [],
   selectedNpc: null,
 
+  // action
   setNpcData: (data) => set({ npcData: data }),
 
   selectNpc: (npcName) =>

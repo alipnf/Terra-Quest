@@ -28,12 +28,15 @@ export default function NpcInfo() {
             Personality Traits:
           </h3>
           <ul className="list-disc pl-5">
+            {/* mengubah object menjadi array dan menampilkan key dan value 
+            contohnya: { "key": "value" } => ["key", "value"] 
+            */}
             {Object.entries(selectedNpc.personality).map(([key, value]) => (
               <ListItem
                 key={key}
                 label={key
-                  .replace(/_/g, " ")
-                  .replace(/\b\w/g, (l) => l.toUpperCase())}
+                  .replace(/_/g, " ") // ganti _ dengan spasi
+                  .replace(/\b\w/g, (l) => l.toUpperCase())} //mengubah huruf pertama menjadi kapital
                 value={value}
               />
             ))}
