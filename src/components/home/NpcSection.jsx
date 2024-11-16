@@ -6,14 +6,16 @@ const npcs = [
     name: "Greenia",
     title: "Penjaga alam dari masa lalu",
     description: "Pelajari kebijaksanaan alam untuk melestarikan lingkungan.",
-    image: "./npc/greenia.webp",
+    image:
+      "https://res.cloudinary.com/dpye48lbg/image/upload/v1731735978/greenia_unkuiw.webp",
   },
   {
     icon: Zap,
     name: "Okta",
     title: "Utusan dari masa depan",
     description: "Jelajahi inovasi hijau untuk masa kini.",
-    image: "./npc/okta.webp",
+    image:
+      "https://res.cloudinary.com/dpye48lbg/image/upload/v1731660735/okta_qmwzbu.webp",
   },
 ];
 
