@@ -24,6 +24,7 @@ export default function Footer() {
           href="https://github.com/alipnf"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="GitHub Profile"
         >
           <Github />
         </a>
@@ -31,6 +32,7 @@ export default function Footer() {
           href="https://web.facebook.com/alipnf"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Facebook Profile"
         >
           <Facebook />
         </a>
@@ -38,6 +40,7 @@ export default function Footer() {
           href="https://www.instagram.com/_alipnf/"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Instagram Profile"
         >
           <Instagram />
         </a>
