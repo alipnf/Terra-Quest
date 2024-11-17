@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 export default function AppRoutes({ setTheme }) {
   return (
     <Routes>
+      <Route path="*" element={<Home />} />
       <Route path="/" element={<Home />} />
       <Route
         path="/npc"
