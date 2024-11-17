@@ -21,7 +21,7 @@ export default function CompletedQuestItem({ mission }) {
           value={difficultyFilter}
           onChange={handleDifficultyChange}
         >
-          <option disabled selected>
+          <option disabled value="">
             Pilih Kesulitan
           </option>
           <option value="All">Semua</option>

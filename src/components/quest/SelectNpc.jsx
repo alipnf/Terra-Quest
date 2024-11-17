@@ -5,9 +5,10 @@ import {
   generateQuest,
   getNPCWelcomeMessage,
 } from "../../services/gemini/geminiApiServices";
+import { useNpcStore } from "../../stores/useNpcStore";
 import { useShallow } from "zustand/react/shallow";
 
-export default function SelectNpc({ setTheme }) {
+export default function SelectNpc() {
   const {
     quest,
     npcData,
@@ -30,6 +31,10 @@ export default function SelectNpc({ setTheme }) {
       loading: state.loading,
       setLoading: state.setLoading,
     })),
+  );
+
+  const { setTheme } = useNpcStore(
+    useShallow((state) => ({ setTheme: state.setTheme })),
   );
 
   const [welcomeMessage, setWelcomeMessage] = useState("");

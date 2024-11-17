@@ -47,7 +47,7 @@ export const generateQuest = async (npc, npcData, quest) => {
   try {
     const result = await model.generateContent(prompt);
 
-    const cleanedResult = result.response
+    const cleanedResult = result.response //funsinya untuk menghapus format yang tidak diinginkan
       .text()
       .replace(/```json/, "")
       .replace(/```/, "")

@@ -8,7 +8,7 @@ import { getOngoingQuests } from "../../services/firebase/questServices";
 import { useUserStore } from "../../stores/useUserStore";
 import SkeletonQuest from "./skeletonQuest";
 
-export default function QuestContent({ setTheme }) {
+export default function QuestContent() {
   const { quests, setNpcData, addQuests } = useQuestStore(
     useShallow((state) => ({
       setNpcData: state.setNpcData,
@@ -52,7 +52,7 @@ export default function QuestContent({ setTheme }) {
 
   return (
     <div className="container mx-auto mb-8 mt-3 min-h-screen px-4">
-      <SelectNpc setTheme={setTheme} />
+      <SelectNpc />
 
       {error && <p className="mt-4 text-red-500">{error}</p>}
 
