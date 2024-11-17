@@ -1,3 +1,5 @@
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import {
@@ -48,6 +50,18 @@ const questStore = (set) => ({
     set((state) => ({
       quests: state.quests.filter((quest) => quest.id !== questId),
     }));
+    Toastify({
+      text: "Quest berhasil dihapus!",
+      duration: 3000,
+      close: true,
+      gravity: "center",
+      position: "center",
+      offset: { y: 60 },
+      style: {
+        background: "#ff5f5f",
+        borderRadius: "12px",
+      },
+    }).showToast();
   },
 
   onTakeQuest: (questId) => {
@@ -65,6 +79,20 @@ const questStore = (set) => ({
       if (takenQuest && uid) {
         addQuestToUser(uid, { ...takenQuest, status: "Sedang dikerjakan" });
       }
+
+      Toastify({
+        text: "Quest berhasil diambil!",
+        duration: 3000,
+        close: true,
+        gravity: "center",
+        position: "center",
+        offset: { y: 60 },
+        style: {
+          background: "#FFC107",
+          borderRadius: "12px",
+          position: "fixed",
+        },
+      }).showToast();
 
       return {
         quests: updatedQuests,
@@ -84,6 +112,19 @@ const questStore = (set) => ({
             quests: state.quests.filter((quest) => quest.id !== questId),
             takenQuests: state.takenQuests.filter((id) => id !== questId),
           }));
+          Toastify({
+            text: "Quest selesai!",
+            duration: 3000,
+            close: true,
+            gravity: "center",
+            position: "center",
+            offset: { y: 60 },
+            style: {
+              background: "#4caf50",
+              borderRadius: "12px",
+              position: "fixed",
+            },
+          }).showToast();
         })
         .catch((error) => {
           console.error("Error completing quest:", error);
@@ -93,7 +134,6 @@ const questStore = (set) => ({
       set({ error: "User is not authenticated." });
     }
   },
-
   resetAll: () =>
     set({
       quests: [],
